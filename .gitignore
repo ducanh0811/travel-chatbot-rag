@@ -1,0 +1,45 @@
+# ========================
+# Python cache & artifacts
+# ========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# ========================
+# VSCode, PyCharm settings
+# ========================
+.vscode/
+.idea/
+
+# ========================
+# Environment Variables
+# ========================
+.env
+.env.*
+
+# ========================
+# LangChain + ChromaDB
+# ========================
+chromadb/             # thư mục lưu vector store
+*.chroma/             # nếu lưu db theo dạng file
+*.sqlite3             # SQLite file từ ChromaDB
+
+# ========================
+# Jupyter / IPython
+# ========================
+.ipynb_checkpoints/
+
+# ========================
+# Logs & temp files
+# ========================
+*.log
+*.tmp
+*.bak
+
+# ========================
+# Data files (raw or temp)
+# ========================
+data/*.json
+!data/sample.json      # nếu bạn có file mẫu muốn giữ lại
