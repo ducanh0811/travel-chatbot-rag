@@ -6,6 +6,7 @@ from langchain_core.documents import Document
 from langchain.chains import RetrievalQA
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain.prompts import PromptTemplate
+
 # ====== Load API Key ======
 load_dotenv()
 openai_api_key = os.environ["OPENAI_API_KEY"]
@@ -39,15 +40,15 @@ def load_all_data():
                 else:
                     open_time = item.get("open_time", "")
                     close_time = item.get("close_time", "")
-                tags = ", ".join(item.get("tags", []))
+                tags_list = item.get("tags", [])
+                tags_str = ", ".join(tags_list)
                 duration = item.get("duration_suggested_min", "Không rõ")
-
                 content = (
                     f"{name} là một {data_type} nằm ở phường {ward}, quận {district}. "
                     f"Mô tả: {desc} "
                     f"Mở cửa từ {open_time} đến {close_time}. "
                     f"Gợi ý thời gian tham quan: khoảng {duration} phút. "
-                    f"Từ khóa liên quan: {tags}."
+                    f"Từ khóa liên quan: {', '.join(tags_str)}."
                 )
 
                 doc = Document(
@@ -55,27 +56,31 @@ def load_all_data():
                     metadata={
                         "type": data_type,
                         "name": name,
-                        "district": str(item.get("district", "")) if item.get("district") else None,
-                        "ward": str(item.get("ward", "")) if item.get("ward") else None,
-                        "tags": ", ".join(item.get("tags", []))
+                        "district":str(district) if district else None ,
+                        "ward": str(ward) if ward else None,
+                        "tags": tags_str  # ✅ Lưu đúng dạng list
                     }
                 )
                 all_docs.append(doc)
     return all_docs
-#======Hàm lọc theo metadata(ward, district) =====
-def get_retriever_with_filters(vectorstore, district=None, ward=None):
+
+# ====== Hàm lọc theo metadata (ward, district, tag) ======
+def get_retriever_with_filters(vectorstore, district=None, ward=None, tag=None):
     filters = {}
 
     if district:
-        filters["district"] = district
+        filters["district"] = {"$eq": district}
     if ward:
-        filters["ward"] = ward
+        filters["ward"] = {"$eq": ward}
+    if tag:
+        filters["tags"] = {"$in": [tag.lower()]}
+
     if filters:
         retriever = vectorstore.as_retriever(
             search_type="mmr",
             search_kwargs={
                 "k": 5,
-                "filter": filters
+                "filter": {"where": filters}  # ✅ Bọc trong where
             }
         )
     else:
@@ -84,6 +89,7 @@ def get_retriever_with_filters(vectorstore, district=None, ward=None):
             search_kwargs={"k": 5}
         )
     return retriever
+
 # ====== Tạo Embedding và lưu vào ChromaDB ======
 def create_vector_store(documents):
     embedding = OpenAIEmbeddings(openai_api_key=openai_api_key)
@@ -95,32 +101,48 @@ def create_vector_store(documents):
     vectorstore.persist()
     return vectorstore
 
+# ====== Trích xuất tag từ câu hỏi người dùng ======
+def extract_tags_from_input(user_input, all_tags):
+    matched_tags = []
+    for tag in all_tags:
+        if tag.lower() in user_input.lower():
+            matched_tags.append(tag.lower())
+    return matched_tags
+
+def get_all_tags(documents):
+    tag_set = set()
+    for doc in documents:
+        tags = doc.metadata.get("tags", [])
+        if isinstance(tags, list):
+            tag_set.update([t.lower() for t in tags])
+    return list(tag_set)
+
 # ====== Truy vấn với LangChain ======
-def build_chatbot(vectorstore, district=None, ward=None):
-    retriever = get_retriever_with_filters(vectorstore, district, ward)
+def build_chatbot(vectorstore, district=None, ward=None, tag=None):
+    retriever = get_retriever_with_filters(vectorstore, district, ward, tag)
     llm = ChatOpenAI(
         model="gpt-3.5-turbo",
         openai_api_key=openai_api_key,
-        temperature=0.7  # Gợi ý để tạo câu trả lời phong phú hơn
+        temperature=0.7
     )
 
-    # chain = RetrievalQA.from_chain_type(
-    #     llm=llm,
-    #     retriever=retriever,
-    #     return_source_documents=False
-    # )
     QA_PROMPT = PromptTemplate.from_template("""
-    Bạn là một hướng dẫn viên du lịch thông minh. Trả lời câu hỏi của người dùng bằng tiếng Việt, dựa trên thông tin được cung cấp từ dữ liệu truy xuất.
+    Bạn là một hướng dẫn viên du lịch thông minh. Trả lời câu hỏi của người dùng bằng tiếng Việt, dựa trên thông tin từ dữ liệu địa điểm bên dưới.
 
-    ❗ Nếu người dùng hỏi gợi ý, hãy trình bày theo format sau:
+    Nếu người dùng cần gợi ý, hãy đưa ra 5 địa điểm phù hợp nhất. Mỗi gợi ý trình bày theo mẫu:
 
-    Tên: ...
-    Loại: ...
-    Khu vực: ...
-    ❗ Nếu người dùng nói "chi tiết hơn" hoặc "xem thêm", hãy mở rộng mô tả và đưa thêm các điểm nổi bật.
+    Tên: (Tên địa điểm)  
+    Loại: (Loại địa điểm: quán ăn, cafe, khách sạn...)  
+    Khu vực: (Phường, Quận)  
+    Mô tả: (Mô tả ngắn gọn, hấp dẫn, nổi bật)  
+    ---
 
-    Câu hỏi: {question}
-    Thông tin hỗ trợ: {context}
+    Nếu người dùng yêu cầu chi tiết hơn, bạn có thể mô tả sâu hơn về các dịch vụ, giờ mở cửa, phù hợp với nhóm nào, v.v.
+
+    Câu hỏi của người dùng: {question}  
+    Dữ liệu địa điểm truy xuất được:  
+    {context}
+
     Trả lời:
     """)
 
@@ -129,35 +151,40 @@ def build_chatbot(vectorstore, district=None, ward=None):
         retriever=retriever,
         return_source_documents=False,
         chain_type_kwargs={"prompt": QA_PROMPT}
-    )    
+    )
     return chain
-
-
 
 # ====== MAIN ======
 if __name__ == "__main__":
     print("🔄 Đang tải dữ liệu...")
     documents = load_all_data()
+    all_tags = get_all_tags(documents)
 
     print(f"📄 Đã tải {len(documents)} địa điểm.")
     print("💾 Đang tạo vector store...")
     vectorstore = create_vector_store(documents)
 
     print("🤖 Khởi động chatbot...")
-    chatbot = build_chatbot(vectorstore)
-
     print("✅ Chatbot đã sẵn sàng! Gõ 'exit' để thoát.")
     history = []
+
     while True:
         user_input = input("💬 Bạn: ").strip()
-        if user_input in ["chi tiết hơn", "xem thêm", "nói rõ hơn", "tell me more"]:
-                if history:
-                    user_input = f"Cho tôi biết chi tiết hơn về {history[-1]}"
-                else:
-                    print("🤖 Bot: Bạn muốn biết chi tiết về gì?")
-                    continue
-        else:
-                history.append(user_input)
+        if user_input.lower() in ["exit", "quit"]:
+            break
 
+        if user_input in ["chi tiết hơn", "xem thêm", "nói rõ hơn", "tell me more"]:
+            if history:
+                user_input = f"Cho tôi biết chi tiết hơn về {history[-1]}"
+            else:
+                print("🤖 Bot: Bạn muốn biết chi tiết về gì?")
+                continue
+        else:
+            history.append(user_input)
+
+        matched_tags = extract_tags_from_input(user_input, all_tags)
+        tag_filter = matched_tags[0] if matched_tags else None
+
+        chatbot = build_chatbot(vectorstore, tag=tag_filter)
         result = chatbot.invoke({"query": user_input})
         print("🤖 Bot:", result["result"])
