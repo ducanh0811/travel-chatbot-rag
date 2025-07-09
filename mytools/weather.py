@@ -1,8 +1,17 @@
 import requests
+import os
 from typing import Optional
 from langchain_core.tools import tool
+from dotenv import load_dotenv
 
-API_KEY = "ea4de82e443d888676a2250ef1c58aef"
+# Load environment variables from .env file
+load_dotenv()
+
+# Get API key from environment variable
+API_KEY = os.getenv("OPENWEATHER_API_KEY")
+if not API_KEY:
+    raise ValueError("OPENWEATHER_API_KEY không được tìm thấy trong file .env")
+
 BASE_URL = "http://api.openweathermap.org/data/2.5"
 
 def get_weather_data(location: str, endpoint: str) -> dict:
