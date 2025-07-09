@@ -27,6 +27,8 @@ QA_PROMPT = PromptTemplate.from_template("""
     Loại: (Loại địa điểm: quán ăn, cafe, khách sạn...)  
     Khu vực: (Phường, Quận)  
     Mô tả: (Mô tả ngắn gọn, hấp dẫn, nổi bật)  
+    Thời gian mở đóng: (Open-Close)/(Checkin/Checkout)
+    Thời gian gợi ý ở lại: (Duration_suggested_min) <Hotel thì bỏ qua>
     ---
 
     Nếu người dùng yêu cầu chi tiết hơn, bạn có thể mô tả sâu hơn về các dịch vụ, giờ mở cửa, phù hợp với nhóm nào, v.v.
