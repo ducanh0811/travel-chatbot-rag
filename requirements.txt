@@ -1,8 +1,0 @@
-# Core dependencies for MyTools and Agents
-requests>=2.25.0
-python-dotenv>=0.19.0
-
-# LangChain dependencies for agents and tools
-langchain-core>=0.1.0
-langchain-openai>=0.1.0
-langgraph>=0.1.0 
