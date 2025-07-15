@@ -2,55 +2,69 @@
 
 import os
 from dotenv import load_dotenv
-
 from langchain_openai import ChatOpenAI
 from langgraph_supervisor import create_supervisor
-
-# import các factory tạo sub-agent
 from weather_agent import create_weather_agent
 from travel_information_agent import create_information_agent
-def create_supervisor_agent():
-    # 1. Load API key
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+def load_api_key():
     load_dotenv()
-    if not os.getenv("OPENAI_API_KEY"):
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
         raise RuntimeError("Thiếu OPENAI_API_KEY trong .env")
+    return api_key
 
-    # 2. Khởi tạo chung LLM (chung cho tất cả các agent)
-    llm = ChatOpenAI(model="gpt-3.5-turbo")
+def get_llm():
+    # Khởi tạo LLM dùng chung
+    return ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
 
-    # 3. Tạo từng sub-agent
-    weather_agent  = create_weather_agent() 
-    travel_information_agent = create_information_agent()
-    # 4. Định nghĩa prompt cho supervisor
-    prompt="""
-Ngày hôm nay: 10/07/2025
+def create_agents():
+    # Khởi tạo các agent con
+    with ThreadPoolExecutor() as executor:
+        future_weather = executor.submit(create_weather_agent)
+        future_travel = executor.submit(create_information_agent)
+        weather_agent = future_weather.result()
+        travel_information_agent = future_travel.result()
+    return weather_agent, travel_information_agent
+
+def create_supervisor_agent():
+    load_api_key()
+    llm = get_llm()
+    weather_agent, travel_information_agent = create_agents()
+    prompt = """
 Bạn là một Supervisor Agent, có nhiệm vụ phân công:
-- Nếu user hỏi về thời tiết về Đà Nẵng (từ khoá: “thời tiết”, “weather”, tên thành phố…) → delegate cho weather_agent.
-- Nếu user hỏi về thông tin các địa danh, nhà hàng, quán ăn, khách sạn, cafe, địa danh, sự kiện,...  (từ khoá: “Nhà hàng”, "Khách sạn", "Sự kiện",...) → delegate cho travel_information_agent.
+- Nếu câu hỏi có yêu cầu về thời tiết về Đà Nẵng (từ khoá: “thời tiết”, “weather”, tên thành phố…) → delegate cho weather_agent.
+- Nếu câu hỏi có yêu cầu về thông tin các địa danh, nhà hàng, quán ăn, khách sạn, cafe, địa danh, sự kiện,...  (từ khoá: “Nhà hàng”, "Khách sạn", "Sự kiện",...) → delegate cho travel_information_agent.
 User hỏi: {user_input}
 """
-
-
-    # 6. Tạo supervisor graph
     graph = create_supervisor(
         model=llm,
-        agents=[weather_agent,travel_information_agent],
+        agents=[weather_agent, travel_information_agent],
         prompt=prompt,
     )
-    # …then compile it into a runnable
     supervisor = graph.compile()
     return supervisor
 
+def run_supervisor_query(query):
+    supervisor = create_supervisor_agent()
+    response = supervisor.invoke({"messages": {"role": "user", "content": query}})
+    if not response:
+        print("❌ Không nhận được phản hồi từ supervisor.")
+        return
+    if "messages" in response and response["messages"]:
+        print("--- Toàn bộ response từ subagent và supervisor ---")
+        for i, msg in enumerate(response["messages"], 1):
+            content = msg.content if hasattr(msg, 'content') else msg
+            if content and not any(s in content.lower() for s in ["transferred to", "transferring", "successfully transfer"]):
+                if content != query:
+                    print(content)
+    else:
+        print("⚠️ Không có trường 'messages' hoặc không có kết quả từ sub-agent. Toàn bộ response:")
+        print(response)
 
 # Ví dụ chạy thử
 if __name__ == "__main__":
-    supervisor = create_supervisor_agent()
-    query = "Cho tôi thông tin về thời tiết 2-3 ngày tới"
-    # Chạy supervisor; nó sẽ tự động gọi weather_agent
-    response = supervisor.invoke({"messages": {"role": "user", "content": query}})
-    # In kết quả
-    if "messages" in response:
-    # In thông tin chi tiết từ travel_information_agent (nếu có)
-        for msg in response["messages"]:
-            print(msg.content)
+    query = "Cho thông tin sự kiện lễ hội tại Đà Nẵng vào tháng 7"
+    run_supervisor_query(query)
 

@@ -1,7 +1,7 @@
 import os
 import json
 from dotenv import load_dotenv
-
+from concurrent.futures import ThreadPoolExecutor
 from langchain.schema import Document
 from langchain_community.vectorstores import Chroma
 from langchain_community.vectorstores.utils import filter_complex_metadata
@@ -13,12 +13,48 @@ openai_api_key = os.environ.get("OPENAI_API_KEY")
 if not openai_api_key:
     raise ValueError("⚠️ Vui lòng đặt biến môi trường OPENAI_API_KEY trong file .env của bạn.")
 
-# ====== Load & Gộp dữ liệu từ 4 file JSON ======
+# ====== Load & Gộp dữ liệu từ 4 file JSON song song ======
+def load_file_data(data_type, path):
+    if not os.path.exists(path):
+        print(f"⚠️ Không tìm thấy file: {path}")
+        return []
+    with open(path, "r", encoding="utf-8") as f:
+        items = json.load(f)
+    docs = []
+    for item in items:
+        name = item.get("name", "Không rõ")
+        desc = item.get("description", "")
+        district = item.get("district", "")
+        ward = item.get("ward", "")
+        if data_type == "hotel":
+            open_time = item.get("checkin_time", "Không rõ")
+            close_time = item.get("checkout_time", "Không rõ")
+        else:
+            open_time = item.get("open_time", "")
+            close_time = item.get("close_time", "")
+        tags = item.get("tags", [])
+        suggested = item.get("duration_suggested_min", "Không rõ")
+        content = (
+            f"{name} ({data_type}) - phường {ward}, quận {district}. "
+            f"Mô tả: {desc}. "
+            f"Giờ mở: {open_time}, đóng: {close_time}. "
+            f"Thời gian gợi ý: {suggested} phút. "
+            f"Tags: {', '.join(tags)}"
+        )
+        doc = Document(
+            page_content=content,
+            metadata={
+                "type": data_type,
+                "name": name,
+                "district": district or None,
+                "ward": ward or None,
+                "tags": tags
+            }
+        )
+        docs.append(doc)
+    return docs
+
 def load_all_data():
-    """
-    Đọc các file JSON của hotel, restaurant, destination, cafe và trả về list Document.
-    Metadata tags để dưới dạng list ban đầu, sẽ lọc sau.
-    """
     file_paths = {
         "hotel": "data/hotel.json",
         "restaurant": "data/restaurant.json",
@@ -26,43 +62,10 @@ def load_all_data():
         "cafe": "data/cafe.json"
     }
     documents = []
-    for data_type, path in file_paths.items():
-        if not os.path.exists(path):
-            print(f"⚠️ Không tìm thấy file: {path}")
-            continue
-        with open(path, "r", encoding="utf-8") as f:
-            items = json.load(f)
-        for item in items:
-            name = item.get("name", "Không rõ")
-            desc = item.get("description", "")
-            district = item.get("district", "")
-            ward = item.get("ward", "")
-            if data_type == "hotel":
-                open_time = item.get("checkin_time", "Không rõ")
-                close_time = item.get("checkout_time", "Không rõ")
-            else:
-                open_time = item.get("open_time", "")
-                close_time = item.get("close_time", "")
-            tags = item.get("tags", [])
-            suggested = item.get("duration_suggested_min", "Không rõ")
-            content = (
-                f"{name} ({data_type}) - phường {ward}, quận {district}. "
-                f"Mô tả: {desc}. "
-                f"Giờ mở: {open_time}, đóng: {close_time}. "
-                f"Thời gian gợi ý: {suggested} phút. "
-                f"Tags: {', '.join(tags)}"
-            )
-            doc = Document(
-                page_content=content,
-                metadata={
-                    "type": data_type,
-                    "name": name,
-                    "district": district or None,
-                    "ward": ward or None,
-                    "tags": tags
-                }
-            )
-            documents.append(doc)
+    with ThreadPoolExecutor() as executor:
+        futures = [executor.submit(load_file_data, data_type, path) for data_type, path in file_paths.items()]
+        for future in futures:
+            documents.extend(future.result())
     return documents
 
 # ====== Tạo và Lưu ChromaDB ======
@@ -73,7 +76,6 @@ def save_chromadb(documents, persist_dir: str = "chromadb"):
     """
     # Loại bỏ metadata phức tạp (list, dict)
     simple_docs = filter_complex_metadata(documents)
-
     embedding = OpenAIEmbeddings(openai_api_key=openai_api_key)
     chroma_store = Chroma.from_documents(
         documents=simple_docs,

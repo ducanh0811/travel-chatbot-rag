@@ -2,22 +2,32 @@ import os
 from dotenv import load_dotenv
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_chroma import Chroma
-from langchain_openai import ChatOpenAI
 from langchain.chains import RetrievalQA
 from langchain.tools import tool
 from langchain.prompts import PromptTemplate
-# ====== Load API Key ======
-load_dotenv()
-openai_api_key = os.environ.get("OPENAI_API_KEY")
-if not openai_api_key:
-    raise ValueError("⚠️ Vui lòng thiết lập biến môi trường OPENAI_API_KEY trong .env")
+from concurrent.futures import ThreadPoolExecutor
 
-# ====== Vectorstore sẽ được gán từ Agent chính ======
-embedding = OpenAIEmbeddings()
-vectorstore = Chroma(
-persist_directory="chromadb",
-embedding_function=embedding,
-)
+def load_env():
+    load_dotenv()
+    api_key = os.environ.get("OPENAI_API_KEY")
+    if not api_key:
+        raise ValueError("⚠️ Vui lòng thiết lập biến môi trường OPENAI_API_KEY trong .env")
+    return api_key
+
+def get_embedding_and_vectorstore():
+    # Khởi tạo embedding và vectorstore song song
+    with ThreadPoolExecutor() as executor:
+        future_embedding = executor.submit(OpenAIEmbeddings)
+        embedding = future_embedding.result()
+        future_vectorstore = executor.submit(
+            lambda: Chroma(
+                persist_directory="chromadb",
+                embedding_function=embedding,
+            )
+        )
+        vectorstore = future_vectorstore.result()
+    return embedding, vectorstore
+
 QA_PROMPT = PromptTemplate.from_template("""
     Bạn là một hướng dẫn viên du lịch thông minh. Trả lời câu hỏi của người dùng bằng tiếng Việt, dựa trên thông tin từ dữ liệu địa điểm bên dưới.
 
@@ -39,6 +49,11 @@ QA_PROMPT = PromptTemplate.from_template("""
 
     Trả lời:
     """)
+
+# Khởi tạo embedding và vectorstore toàn cục (có thể dùng lại)
+load_env()
+embedding, vectorstore = get_embedding_and_vectorstore()
+
 @tool
 def rag_tool(query: str) -> str:
     """
@@ -48,19 +63,16 @@ def rag_tool(query: str) -> str:
     global vectorstore
     if vectorstore is None:
         raise ValueError("Vectorstore chưa được gán. Vui lòng khởi tạo trong Agent và gán vào rag_tool_module.vectorstore.")
-    # Tạo retriever
     retriever = vectorstore.as_retriever(search_type="mmr", search_kwargs={"k": 5})
-    # Tạo QA chain
     qa_chain = RetrievalQA.from_chain_type(
-        llm=ChatOpenAI(model="gpt-3.5-turbo",temperature=0),
+        llm=ChatOpenAI(model="gpt-3.5-turbo", temperature=0),
         retriever=retriever,
         return_source_documents=False,
         chain_type_kwargs={"prompt": QA_PROMPT}
     )
-    # Thực thi truy vấn
     return qa_chain.invoke(query)["result"]
+
 if __name__ == "__main__":
-    # Thử nghiệm
     test_query = "Gợi ý nhà hàng 3 sao gần biển"
     print("⚙️ Thực thi rag_tool với query:\n", test_query)
     try:
