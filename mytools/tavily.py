@@ -1,6 +1,6 @@
 import requests
 import os
-from typing import Optional, List, Dict
+from typing import Optional
 from langchain_core.tools import tool
 from dotenv import load_dotenv
 from concurrent.futures import ThreadPoolExecutor

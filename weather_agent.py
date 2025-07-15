@@ -1,4 +1,3 @@
-import os
 from dotenv import load_dotenv
 from mytools.weather import get_weather, get_weather_forecast
 from langchain_openai import ChatOpenAI
