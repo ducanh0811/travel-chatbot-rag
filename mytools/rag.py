@@ -31,7 +31,13 @@ def get_embedding_and_vectorstore():
 QA_PROMPT = PromptTemplate.from_template("""
     Bạn là một hướng dẫn viên du lịch thông minh. Trả lời câu hỏi của người dùng bằng tiếng Việt, dựa trên thông tin từ dữ liệu địa điểm bên dưới.
 
-    Nếu người dùng cần gợi ý, hãy đưa ra 5 địa điểm phù hợp nhất. Mỗi gợi ý trình bày theo mẫu:
+    QUAN TRỌNG:
+    - Chỉ trả lời đúng loại địa điểm mà người dùng hỏi (ví dụ: chỉ khách sạn nếu hỏi khách sạn, chỉ quán cafe nếu hỏi cafe, v.v.).
+    - Ưu tiên các địa điểm có tên hoặc khu vực trùng khớp với truy vấn của người dùng (ví dụ: nếu hỏi về Sơn Trà thì ưu tiên các địa điểm ở khu vực Sơn Trà hoặc có tên Sơn Trà).
+    - Không gộp các loại địa điểm khác nhau vào cùng một câu trả lời.
+    - Nếu không tìm thấy địa điểm phù hợp, hãy trả lời rõ ràng là không có kết quả phù hợp.
+    
+    Mỗi gợi ý trình bày theo mẫu:
                                        
     Tên: (Tên địa điểm)  
     Loại: (Loại địa điểm: quán ăn, cafe, khách sạn...)  
@@ -39,7 +45,7 @@ QA_PROMPT = PromptTemplate.from_template("""
     Mô tả: (Mô tả ngắn gọn, hấp dẫn, nổi bật)  
     Thời gian mở đóng: (Open-Close)/(Checkin/Checkout)
     Thời gian gợi ý ở lại: (Duration_suggested_min) <Hotel thì bỏ qua>
-    ---
+    -----------------------------------------------
 
     Nếu người dùng yêu cầu chi tiết hơn, bạn có thể mô tả sâu hơn về các dịch vụ, giờ mở cửa, phù hợp với nhóm nào, v.v.
 
@@ -65,7 +71,7 @@ def rag_tool(query: str) -> str:
         raise ValueError("Vectorstore chưa được gán. Vui lòng khởi tạo trong Agent và gán vào rag_tool_module.vectorstore.")
     retriever = vectorstore.as_retriever(search_type="mmr", search_kwargs={"k": 5})
     qa_chain = RetrievalQA.from_chain_type(
-        llm=ChatOpenAI(model="gpt-3.5-turbo", temperature=0),
+        llm=ChatOpenAI(model="gpt-4o-mini", temperature=0),
         retriever=retriever,
         return_source_documents=False,
         chain_type_kwargs={"prompt": QA_PROMPT}

@@ -5,12 +5,13 @@ from mytools.tavily import tavily_search_deep
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import create_react_agent
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime
 
 def load_env():
     load_dotenv()
 
 def get_llm():
-    return ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+    return ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 def get_tools():
     # Khởi tạo các tool song song (chuẩn bị cho mở rộng)
@@ -24,14 +25,15 @@ def get_tools():
 def create_information_agent():
     llm = get_llm()
     tools = get_tools()
-    prompt = """
+    prompt = f"""
 Bạn là agent cung cấp thông tin về Du Lịch Đà Nẵng trong ChromaDB.
+- CurrentDate: {datetime.now().strftime('%Y-%m-%d')}
 - Chỉ giới hạn trong du lịch, địa phận tại Đà Nẵng.
 - Khi user đề cập tới sự kiện thì bạn phải hiểu là sự kiện về du lịch.
-- Dùng rag_tool khi người dùng muốn hỏi về các địa điểm du lịch, cafe, nhà hàng, khách sạn, và đừng gộp các địa điểm này trong câu trả lời.
+- Dùng rag_tool khi người dùng muốn hỏi về các địa điểm du lịch, cafe, nhà hàng, khách sạn, và đừng phân 
 - Dùng tavily_search_deep khi người dùng muốn hỏi về các sự kiện du lịch và lễ hội tại Đà Nẵng. LƯU Ý: Xem xét kỹ câu hỏi để xác định thời gian và nội dung sự kiện.
 - Giữ nguyên output của các tool
-User hỏi: {user_input}
+User hỏi: {{user_input}}
 """
     agent = create_react_agent(
         model=llm,
