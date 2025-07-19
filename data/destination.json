@@ -1,7 +1,7 @@
 [
   {
     "name": "Chợ Cồn",
-    "type": "attraction",
+    "type": "chợ",
     "description": "Chợ địa phương sôi động nổi tiếng với thiên đường ẩm thực đường phố.",
     "district": "Hải Châu",
     "open_time": "07:00",
@@ -12,7 +12,7 @@
   },
   {
     "name": "Bãi biển Phạm Văn Đồng",
-    "type": "attraction",
+    "type": "bãi biển",
     "description": "Bãi biển nổi tiếng gần công viên Biển Đông, lý tưởng để tắm và đi dạo.",
     "district": "Sơn Trà",
     "open_time": "05:00",
@@ -23,7 +23,7 @@
   },
   {
     "name": "Cầu Trần Thị Lý",
-    "type": "attraction",
+    "type": "cầu",
     "description": "Cây cầu dây văng hiện đại nổi bật vào ban đêm với ánh đèn rực rỡ.",
     "district": "Hải Châu",
     "open_time": "00:00",
@@ -34,7 +34,7 @@
   },
   {
     "name": "Nhà thờ Con Gà (Chính Tòa)",
-    "type": "attraction",
+    "type": "nhà thờ",
     "description": "Nhà thờ Công giáo màu hồng nổi bật mang kiến trúc Gothic do Pháp xây dựng.",
     "district": "Hải Châu",
     "open_time": "08:00",
@@ -45,7 +45,7 @@
   },
   {
     "name": "Bãi biển Tiên Sa",
-    "type": "attraction",
+    "type": "bãi biển",
     "description": "Bãi biển yên tĩnh nằm ở chân bán đảo Sơn Trà, thích hợp nghỉ ngơi cuối tuần.",
     "district": "Sơn Trà",
     "open_time": "06:00",
@@ -56,7 +56,7 @@
   },
   {
     "name": "Hồ Hòa Trung",
-    "type": "attraction",
+    "type": "hồ",
     "description": "Hồ nước rộng lớn nằm giữa núi rừng, thích hợp cắm trại và chèo SUP.",
     "district": "Liên Chiểu",
     "open_time": "09:00",
@@ -67,7 +67,7 @@
   },
   {
     "name": "Bảo tàng Đà Nẵng",
-    "type": "attraction",
+    "type": "bảo tàng",
     "description": "Nơi lưu giữ hiện vật và tư liệu về lịch sử, văn hóa Đà Nẵng.",
     "district": "Hải Châu",
     "open_time": "08:00",
@@ -78,7 +78,7 @@
   },
   {
     "name": "Cầu Nguyễn Văn Trỗi",
-    "type": "attraction",
+    "type": "cầu",
     "description": "Cây cầu đi bộ cổ kính với thiết kế vòm thép độc đáo, thích hợp đi dạo.",
     "district": "Hải Châu",
     "open_time": "00:00",
@@ -89,7 +89,7 @@
   },
   {
     "name": "Bãi Rạn Nam Ô",
-    "type": "attraction",
+    "type": "bãi biển",
     "description": "Bãi đá rêu xanh độc đáo xuất hiện vào mùa xuân, rất được giới trẻ yêu thích.",
     "district": "Liên Chiểu",
     "open_time": "6:30",
@@ -100,7 +100,7 @@
   },
   {
     "name": "Bảo tàng Đồng Đình",
-    "type": "attraction",
+    "type": "bảo tàng",
     "description": "Bảo tàng tư nhân nằm giữa rừng Sơn Trà, trưng bày cổ vật văn hóa dân tộc.",
     "district": "Sơn Trà",
     "open_time": "08:00",
@@ -111,7 +111,7 @@
   },
   {
     "name": "Cầu Trần Thị Lý",
-    "type": "attraction",
+    "type": "cầu",
     "description": "Cây cầu dây văng hiện đại nổi bật vào ban đêm với ánh đèn rực rỡ.",
     "district": "Hải Châu",
     "open_time": "00:00",
@@ -122,7 +122,7 @@
   },
   {
     "name": "Nhà thờ Con Gà (Chính Tòa)",
-    "type": "attraction",
+    "type": "nhà thờ",
     "description": "Nhà thờ Công giáo màu hồng nổi bật mang kiến trúc Gothic do Pháp xây dựng.",
     "district": "Hải Châu",
     "open_time": "06:00",
@@ -133,7 +133,7 @@
   },
   {
     "name": "Bãi biển Tiên Sa",
-    "type": "attraction",
+    "type": "bãi biển",
     "description": "Bãi biển yên tĩnh nằm ở chân bán đảo Sơn Trà, thích hợp nghỉ ngơi cuối tuần.",
     "district": "Sơn Trà",
     "open_time": "06:00",
@@ -144,7 +144,7 @@
   },
   {
     "name": "Hồ Hòa Trung",
-    "type": "attraction",
+    "type": "hồ",
     "description": "Hồ nước rộng lớn nằm giữa núi rừng, thích hợp cắm trại và chèo SUP.",
     "district": "Hòa Vang",
     "open_time": "06:00",
@@ -155,7 +155,7 @@
   },
   {
     "name": "Bảo tàng Đà Nẵng",
-    "type": "attraction",
+    "type": "bảo tàng",
     "description": "Nơi lưu giữ hiện vật và tư liệu về lịch sử, văn hóa Đà Nẵng.",
     "district": "Hải Châu",
     "open_time": "08:00",
@@ -166,7 +166,7 @@
   },
   {
     "name": "Cầu Nguyễn Văn Trỗi",
-    "type": "attraction",
+    "type": "cầu",
     "description": "Cây cầu đi bộ cổ kính với thiết kế vòm thép độc đáo, thích hợp đi dạo.",
     "district": "Hải Châu",
     "open_time": "00:00",
@@ -177,7 +177,7 @@
   },
   {
     "name": "Bãi Rạn Nam Ô",
-    "type": "attraction",
+    "type": "bãi biển",
     "description": "Bãi đá rêu xanh độc đáo xuất hiện vào mùa xuân, rất được giới trẻ yêu thích.",
     "district": "Liên Chiểu",
     "open_time": "05:00",
@@ -188,7 +188,7 @@
   },
   {
     "name": "Đỉnh Bàn Cờ",
-    "type": "attraction",
+    "type": "núi",
     "description": "Đỉnh núi cao nhất bán đảo Sơn Trà với tượng Tiên Ông chơi cờ và tầm nhìn toàn cảnh thành phố.",
     "district": "Sơn Trà",
     "open_time": "05:30",
@@ -199,7 +199,7 @@
   },
   {
     "name": "Công viên kỳ quan thế giới",
-    "type": "attraction",
+    "type": "công viên",
     "description": "Công viên trưng bày mô hình các kỳ quan nổi tiếng thế giới thu nhỏ.",
     "district": "Ngũ Hành Sơn",
     "open_time": "00:00",
@@ -210,7 +210,7 @@
   },
   {
     "name": "Chùa Quan Thế Âm",
-    "type": "attraction",
+    "type": "chùa",
     "description": "Ngôi chùa thanh tịnh nằm dưới chân Ngũ Hành Sơn, nổi tiếng với lễ hội Quán Thế Âm.",
     "district": "Ngũ Hành Sơn",
     "open_time": "00:00",
@@ -221,7 +221,7 @@
   },
   {
     "name": "Cầu Rồng phun lửa",
-    "type": "attraction",
+    "type": "trình diễn",
     "description": "Trình diễn phun lửa và nước vào tối thứ 7, Chủ Nhật hàng tuần trên Cầu Rồng.",
     "district": "Hải Châu",
     "open_time": "21:00",
@@ -243,7 +243,7 @@
   },
   {
     "name": "Rừng dừa Bảy Mẫu (trạm xuất phát Đà Nẵng)",
-    "type": "attraction",
+    "type": "sinh thái",
     "description": "Điểm du lịch sinh thái, đi thuyền thúng trong rừng dừa nước tại vùng ven Đà Nẵng – giáp Quảng Nam.",
     "district": "Ngũ Hành Sơn",
     "open_time": "07:30",
@@ -254,7 +254,7 @@
   },
   {
     "name": "Nhà lưu niệm Phan Châu Trinh",
-    "type": "attraction",
+    "type": "tưởng niệm",
     "description": "Nơi tưởng niệm nhà yêu nước Phan Châu Trinh, một trong những nhân vật tiêu biểu của phong trào Duy Tân.",
     "district": "Hải Châu",
     "open_time": "08:00",
@@ -265,7 +265,7 @@
   },
   {
     "name": "Công viên Thanh Niên",
-    "type": "attraction",
+    "type": "công viên",
     "description": "Công viên xanh mát gần sông, nơi người dân tập thể dục và tổ chức sự kiện cộng đồng.",
     "district": "Hải Châu",
     "open_time": "05:00",
@@ -276,7 +276,7 @@
   },
     {
       "name": "Đèo Hải Vân",
-      "type": "attraction",
+      "type": "đèo",
       "description": "Cung đường đèo huyền thoại giữa Đà Nẵng và Huế với khung cảnh núi – biển hùng vĩ.",
       "district": "Liên Chiểu",
       "open_time": "06:00",
@@ -287,7 +287,7 @@
     },
     {
       "name": "Làng đá mỹ nghệ Non Nước",
-      "type": "attraction",
+      "type": "làng nghề",
       "description": "Làng nghề điêu khắc đá truyền thống nổi tiếng với các sản phẩm tượng, phù điêu tinh xảo.",
       "district": "Ngũ Hành Sơn",
       "open_time": "08:00",
@@ -298,7 +298,7 @@
     },
     {
       "name": "Làng gốm Thanh Hà (gần Đà Nẵng)",
-      "type": "attraction",
+      "type": "làng nghề",
       "description": "Làng nghề truyền thống với các sản phẩm gốm cổ điển, cách Đà Nẵng khoảng 30 phút di chuyển.",
       "district": "Ngũ Hành Sơn",
       "open_time": "07:30",
@@ -309,7 +309,7 @@
     },
     {
       "name": "Đỉnh Hải Vân Quan",
-      "type": "attraction",
+      "type": "núi",
       "description": "Di tích lịch sử nằm trên đỉnh đèo Hải Vân, từng là điểm giao thương quan trọng thời Nguyễn.",
       "district": "Liên Chiểu",
       "open_time": "06:00",
@@ -320,7 +320,7 @@
     },
     {
       "name": "Đèo Mụ Giạ (vùng giáp ranh phía Tây)",
-      "type": "attraction",
+      "type": "đèo",
       "description": "Cung đường đèo ít người biết, hoang sơ và xanh mát, rất được dân phượt ưa chuộng.",
       "district": "Hòa Vang",
       "open_time": "06:00",
@@ -331,7 +331,7 @@
     },
     {
       "name": "Công viên đá Non Nước",
-      "type": "attraction",
+      "type": "công viên",
       "description": "Khu trưng bày điêu khắc đá với nhiều tác phẩm nghệ thuật ngoài trời đặc sắc.",
       "district": "Ngũ Hành Sơn",
       "open_time": "08:00",
@@ -342,7 +342,7 @@
     },
     {
       "name": "Làng nghề điêu khắc gỗ Phú Tài (giáp Quảng Nam)",
-      "type": "attraction",
+      "type": "làng nghề",
       "description": "Làng nghề truyền thống chuyên chạm khắc gỗ tinh xảo, nằm gần ranh giới Đà Nẵng – Quảng Nam.",
       "district": "Hòa Vang",
       "open_time": "08:00",
@@ -353,7 +353,7 @@
     },
     {
       "name": "Làng nghề bánh tráng Túy Loan",
-      "type": "attraction",
+      "type": "làng nghề",
       "description": "Làng cổ hơn 500 năm tuổi với nghề làm bánh tráng đặc sản và nhà cổ.",
       "district": "Hòa Vang",
       "open_time": "08:00",
@@ -364,7 +364,7 @@
     },
     {
       "name": "Núi Ngũ Hành Sơn",
-      "type": "attraction",
+      "type": "núi",
       "description": "Cụm núi đá vôi gồm 5 ngọn tượng trưng cho ngũ hành, nổi bật với các hang động và chùa thiêng.",
       "district": "Ngũ Hành Sơn",
       "open_time": "07:00",
@@ -375,7 +375,7 @@
     },
     {
       "name": "Đồi Vọng Cảnh Sơn Trà",
-      "type": "attraction",
+      "type": "núi",
       "description": "Một điểm dừng chân lý tưởng để ngắm thành phố từ bán đảo Sơn Trà.",
       "district": "Sơn Trà",
       "open_time": "06:00",
@@ -386,7 +386,7 @@
     },
     {
       "name": "Rừng Hòa Bắc",
-      "type": "attraction",
+      "type": "rừng",
       "description": "Rừng núi xanh mát ở vùng cao Hòa Vang, thích hợp trekking, cắm trại và đạp xe địa hình.",
       "district": "Hòa Vang",
       "open_time": "06:00",
@@ -397,7 +397,7 @@
     },
     {
       "name": "Núi Bà Nà",
-      "type": "attraction",
+      "type": "núi",
       "description": "Đỉnh núi nơi tọa lạc khu du lịch Bà Nà Hills, có khí hậu mát mẻ quanh năm.",
       "district": "Hòa Vang",
       "open_time": "07:00",
@@ -408,7 +408,7 @@
     },
     {
       "name": "Suối Đá – suối Tiên",
-      "type": "attraction",
+      "type": "thác nước",
       "description": "Dòng suối mát lạnh giữa núi rừng nguyên sinh, là nơi nghỉ dưỡng cuối tuần lý tưởng.",
       "district": "Hòa Vang",
       "open_time": "06:00",
@@ -419,7 +419,7 @@
     },
     {
       "name": "Khu sinh thái Phước Nhơn – suối nóng",
-      "type": "attraction",
+      "type": "suối nước nóng",
       "description": "Khu sinh thái kết hợp nghỉ dưỡng với suối nước nóng, massage và thiên nhiên núi đồi yên tĩnh.",
       "district": "Hòa Vang",
       "open_time": "07:00",
@@ -430,7 +430,7 @@
     },
     {
       "name": "Khu rừng nguyên sinh Khe Lim",
-      "type": "attraction",
+      "type": "rừng",
       "description": "Khu rừng rậm và thác nước nguyên sơ ít người biết, thích hợp cho dân phượt chuyên nghiệp.",
       "district": "Hòa Vang",
       "open_time": "06:00",

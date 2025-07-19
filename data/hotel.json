@@ -2,11 +2,11 @@
     {
         "name": "Da Nang Mikazuki Japanese Resorts & Spa",
         "type": "5 sao",
-        "description": "Resort cao cấp ven biển với công viên nước, bể bơi, bãi tắm riêng.",
+        "description": "Khu nghỉ dưỡng cao cấp ven biển với công viên nước, hồ bơi, bãi tắm riêng.",
         "district": "Liên Chiểu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["luxury", "family", "beachfront"],
+        "tags": ["cao cấp", "gia đình", "ven biển"],
         "duration_suggested_min": null,
         "ward": "Phường Hòa Hiệp Nam"
     },
@@ -17,7 +17,7 @@
         "district": "Liên Chiểu",
         "Check-in hour": "12:00",
         "Check-out hour": "12:00",
-        "tags": ["budget", "basic"],
+        "tags": ["ngân sách", "cơ bản"],
         "duration_suggested_min": null,
         "ward": "Phường Hòa Khánh Bắc"
     },
@@ -28,7 +28,7 @@
         "district": "Liên Chiểu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["budget", "apartment"],
+        "tags": ["ngân sách", "căn hộ"],
         "duration_suggested_min": null,
         "ward": "Phường Hòa Hiệp Nam"
     },
@@ -39,7 +39,7 @@
         "district": "Liên Chiểu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["budget", "basic"],
+        "tags": ["ngân sách", "cơ bản"],
         "duration_suggested_min": null,
         "ward": "Phường Hòa Minh"
     },
@@ -50,7 +50,7 @@
         "district": "Liên Chiểu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["budget", "wifi"],
+        "tags": ["ngân sách", "wifi"],
         "duration_suggested_min": null,
         "ward": "Phường Hòa Minh"
     },
@@ -61,7 +61,7 @@
         "district": "Liên Chiểu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["budget", "wifi"],
+        "tags": ["ngân sách", "wifi"],
         "duration_suggested_min": null,
         "ward": "Phường Hòa Hiệp Bắc"
     },
@@ -72,7 +72,7 @@
         "district": "Liên Chiểu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["budget", "basic"],
+        "tags": ["ngân sách", "cơ bản"],
         "duration_suggested_min": null,
         "ward": "Phường Hòa Minh"
     },
@@ -83,7 +83,7 @@
         "district": "Liên Chiểu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["budget", "pool", "airport shuttle", "family"],
+        "tags": ["ngân sách", "hồ bơi", "đưa đón sân bay", "gia đình"],
         "duration_suggested_min": null,
         "ward": "Phường Hòa Minh"
     },
@@ -94,7 +94,7 @@
         "district": "Liên Chiểu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["modern", "tour support", "airport shuttle", "parking"],
+        "tags": ["hiện đại", "hỗ trợ tour", "đưa đón sân bay", "đỗ xe"],
         "duration_suggested_min": null,
         "ward": "Phường Hòa Minh"
     },
@@ -105,7 +105,7 @@
         "district": "Liên Chiểu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["budget", "wifi", "free parking", "airport transfer"],
+        "tags": ["ngân sách", "wifi", "đỗ xe miễn phí", "đưa đón sân bay"],
         "duration_suggested_min": null,
         "ward": "Phường Hòa Hiệp Nam"
     },
@@ -116,7 +116,7 @@
         "district": "Thanh Khê",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["boutique", "spa", "pool"],
+        "tags": ["boutique", "spa", "hồ bơi"],
         "duration_suggested_min": null,
         "ward": "Thạc Gián"
     },
@@ -127,7 +127,7 @@
         "district": "Thanh Khê",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["boutique", "pool"],
+        "tags": ["boutique", "hồ bơi"],
         "duration_suggested_min": null,
         "ward": "Thạc Gián"
     },
@@ -138,7 +138,7 @@
         "district": "Thanh Khê",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["pool", "beach"],
+        "tags": ["hồ bơi", "biển"],
         "duration_suggested_min": null,
         "ward": "Xuân Hà"
     },
@@ -149,7 +149,7 @@
         "district": "Thanh Khê",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["spa", "central"],
+        "tags": ["spa", "trung tâm"],
         "duration_suggested_min": null,
         "ward": "Thanh Khê Đông"
     },
@@ -160,7 +160,7 @@
         "district": "Thanh Khê",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["apartment", "breakfast"],
+        "tags": ["căn hộ", "bữa sáng"],
         "duration_suggested_min": null,
         "ward": "Phường Thạc Gián"
     },
@@ -171,7 +171,7 @@
         "district": "Thanh Khê",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["beach", "pool"],
+        "tags": ["biển", "hồ bơi"],
         "duration_suggested_min": null,
         "ward": "Thanh Khê Tây"
     },
@@ -182,7 +182,7 @@
         "district": "Thanh Khê",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["central", "minibar"],
+        "tags": ["trung tâm", "minibar"],
         "duration_suggested_min": null,
         "ward": "Xuân Hà"
     },
@@ -193,7 +193,7 @@
         "district": "Thanh Khê",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["budget"],
+        "tags": ["ngân sách"],
         "duration_suggested_min": null,
         "ward": "Phường Xuân Hà"
     },
@@ -204,7 +204,7 @@
         "district": "Thanh Khê",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["budget", "wifi"],
+        "tags": ["ngân sách", "wifi"],
         "duration_suggested_min": null,
         "ward": "Phường Xuân Hà"
     },
@@ -215,7 +215,7 @@
         "district": "Hải Châu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["central", "modern", "wifi"],
+        "tags": ["trung tâm", "hiện đại", "wifi"],
         "duration_suggested_min": null,
         "ward": "Phường Phước Ninh"
     },
@@ -226,7 +226,7 @@
         "district": "Hải Châu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["budget"],
+        "tags": ["ngân sách"],
         "duration_suggested_min": null,
         "ward": "Phường Phước Ninh"
     },
@@ -237,7 +237,7 @@
         "district": "Hải Châu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["pool", "minibar", "central"],
+        "tags": ["hồ bơi", "minibar", "trung tâm"],
         "duration_suggested_min": null,
         "ward": "Phường Phước Ninh"
     },
@@ -259,7 +259,7 @@
         "district": "Hải Châu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["central", "pool", "modern"],
+        "tags": ["trung tâm", "hồ bơi", "hiện đại"],
         "duration_suggested_min": null,
         "ward": "Phường Phước Ninh"
     },
@@ -281,7 +281,7 @@
         "district": "Hải Châu",
         "Check-in hour": "15:00",
         "Check-out hour": "12:00",
-        "tags": ["luxury", "riverview", "family"],
+        "tags": ["luxury", "riverview", "gia đình"],
         "duration_suggested_min": null,
         "ward": "Phường Thạch Thang"
     },
@@ -292,7 +292,7 @@
         "district": "Hải Châu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["apartment", "laundry", "wifi"],
+        "tags": ["căn hộ", "giặt ủi", "wifi"],
         "duration_suggested_min": null,
         "ward": "Phường Phước Ninh"
     },
@@ -303,7 +303,7 @@
         "district": "Hải Châu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["central", "recommended"],
+        "tags": ["trung tâm", "được đề xuất"],
         "duration_suggested_min": null,
         "ward": "Phường Phước Ninh"
     },
@@ -336,7 +336,7 @@
         "district": "Hải Châu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["spa", "pool", "airport nearby"],
+        "tags": ["spa", "hồ bơi", "gần sân bay"],
         "duration_suggested_min": null,
         "ward": "Phường Hòa Cường Bắc"
     },
@@ -347,7 +347,7 @@
         "district": "Hải Châu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["sea nearby", "basic"],
+        "tags": ["biển gần", "cơ bản"],
         "duration_suggested_min": null,
         "ward": "Phường Hòa Cường Bắc"
     },
@@ -358,7 +358,7 @@
         "district": "Hải Châu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["central", "comfortable"],
+        "tags": ["trung tâm", "thoải mái"],
         "duration_suggested_min": null,
         "ward": "Phường Hòa Cường Bắc"
     },
@@ -369,7 +369,7 @@
         "district": "Hải Châu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["boutique", "design"],
+        "tags": ["boutique", "thiết kế"],
         "duration_suggested_min": null,
         "ward": "Phường Phước Ninh"
     },
@@ -380,7 +380,7 @@
         "district": "Hải Châu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["capsule", "modern"],
+        "tags": ["capsule", "hiện đại"],
         "duration_suggested_min": null,
         "ward": "Phường Phước Ninh"
     },
@@ -402,7 +402,7 @@
         "district": "Hải Châu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["boutique", "central"],
+        "tags": ["boutique", "trung tâm"],
         "duration_suggested_min": null,
         "ward": "Phường Phước Ninh"
     },
@@ -413,7 +413,7 @@
         "district": "Hải Châu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["spa", "central"],
+        "tags": ["spa", "trung tâm"],
         "duration_suggested_min": null,
         "ward": "Phường Phước Ninh"
     },
@@ -424,7 +424,7 @@
         "district": "Hải Châu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["riverview", "central"],
+        "tags": ["riverview", "trung tâm"],
         "duration_suggested_min": null,
         "ward": "Phường Phước Ninh"
     },
@@ -435,7 +435,7 @@
         "district": "Hải Châu",
         "Check-in hour": "14:00",
         "Check-out hour": "12:00",
-        "tags": ["spa", "riverfront", "airport shuttle", "free parking", "wifi"],
+        "tags": ["spa", "riverfront", "đưa đón sân bay", "đỗ xe miễn phí", "wifi"],
         "duration_suggested_min": null,
         "ward": "Phường Phước Ninh"
     }

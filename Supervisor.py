@@ -64,6 +64,6 @@ def run_supervisor_query(query):
 
 # Ví dụ chạy thử
 if __name__ == "__main__":
-    query = "Tìm restaurant ở Hải Châu"
+    query = "Cho tôi các địa điểm để chụp ảnh đẹp ở Đà Nẵng"
     run_supervisor_query(query)
 

@@ -1,9 +1,9 @@
 [
- {
+  {
     "name": "Madame Fleur Bistro",
     "type": "restaurant",
     "description": "Nhà hàng Pháp sang trọng ở trung tâm thành phố.",
-    "district": "Hai Châu",
+    "district": "Hải Châu",
     "open_time": "11:00",
     "close_time": "22:00",
     "tags": ["pháp", "cao cấp"],
