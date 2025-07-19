@@ -25,6 +25,7 @@ def load_file_data(data_type, path):
         name = item.get("name", "Không rõ")
         desc = item.get("description", "")
         district = item.get("district", "")
+        type = item.get("type", "")
         ward = item.get("ward", "")
         if data_type == "hotel":
             open_time = item.get("checkin_time", "Không rõ")
@@ -36,6 +37,7 @@ def load_file_data(data_type, path):
         suggested = item.get("duration_suggested_min", "Không rõ")
         content = (
             f"{name} ({data_type}) - phường {ward}, quận {district}. "
+            f"Loại: {type}. "
             f"Mô tả: {desc}. "
             f"Giờ mở: {open_time}, đóng: {close_time}. "
             f"Thời gian gợi ý: {suggested} phút. "
@@ -44,7 +46,7 @@ def load_file_data(data_type, path):
         doc = Document(
             page_content=content,
             metadata={
-                "type": data_type,
+                "type": type,
                 "name": name,
                 "district": district or None,
                 "ward": ward or None,
