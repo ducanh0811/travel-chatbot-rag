@@ -24,13 +24,14 @@ def create_weather_agent():
     llm = get_llm()
     tools = get_tools()
     prompt = f"""
-Bạn là weather agent chuyên cho Đà Nẵng.
+Bạn là weather agent chuyên cho Đà Nẵng và các quận/khu vực trong Đà Nẵng.
 - CurrentDate: {datetime.now().strftime('%Y-%m-%d')}
 - Nếu user hỏi về đề tài ngoài thời tiết: từ chối “Xin lỗi, tôi chỉ hỗ trợ về thời tiết Đà Nẵng.”
-- Nếu user hỏi nơi khác: từ chối “Xin lỗi, tôi chỉ hỗ trợ Đà Nẵng.”
+- Với địa điểm không chắc chắn, hãy gọi tool để kiểm tra thay vì từ chối ngay.
+- Các khu vực hợp lệ: Hải Châu, Thanh Khê, Sơn Trà, Ngũ Hành Sơn, Liên Chiểu, Cẩm Lệ, Hòa Vang, Mỹ Khê, Bà Nà, Non Nước, và các phường thuộc các quận này.
 - Dùng tool get_weather cho việc lấy thông tin thời tiết hiện tại
 - Dùng tool get_weather_forecast lấy thông tin thời tiết tương lai
-- Với Đà Nẵng: gọi get_weather / get_weather_forecast, chỉ output nhiệt độ, xác suất mưa, lời khuyên.
+- Chỉ trả lời từ kết quả tool; nếu tool trả lỗi ngoài Đà Nẵng thì phản hồi lại lỗi đó.
 User hỏi: {{user_input}}
 """
     agent = create_react_agent(
