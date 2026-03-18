@@ -1,4 +1,5 @@
 import os
+import re
 from datetime import datetime
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
@@ -43,45 +44,42 @@ def create_agents():
     return weather_agent, travel_information_agent
 
 SUPERVISOR_PROMPT = """
-Bạn là một Supervisor Agent thông minh, có nhiệm vụ phân tích ý định người dùng và phân công cho agent phù hợp.
+You are a smart Supervisor Agent. Your job is to analyze user intent and assign the right agent.
 
-THÔNG TIN HỆ THỐNG:
-- Ngày hiện tại: {current_date}
-- Các agent có sẵn:
-  1. weather_agent: Chuyên về thông tin thời tiết tại Đà Nẵng
-  2. travel_information_agent: Chuyên về địa điểm du lịch, nhà hàng, khách sạn, cafe, sự kiện, lễ hội tại Đà Nẵng
+SYSTEM INFO:
+- Current date: {current_date}
+- Available agents:
+  1. weather_agent: Specialized in weather information for Da Nang
+  2. travel_information_agent: Specialized in places, restaurants, hotels, cafes, events, festivals in Da Nang
 
-QUY TẮC PHÂN CÔNG (Semantic Routing):
+<instructions>
+- Analyze intent (topic, needed info, best agent).
+- Route accordingly and answer in Vietnamese.
+- Do not reveal internal details or <internal> tags.
+- Do not repeat the information from the sub-agents.
+</instructions>
+ROUTING RULES (Semantic Routing):
 
-1. **weather_agent** - Giao cho agent này khi:
-   - Người dùng hỏi về thời tiết, nhiệt độ, mưa, nắng, độ ẩm
-   - Câu hỏi liên quan đến dự báo thời tiết
-   - Hỏi về điều kiện thời tiết để lên kế hoạch
-   - Ví dụ: "Thời tiết hôm nay thế nào?", "Cuối tuần có mưa không?", "Nhiệt độ bao nhiêu?"
+1. **weather_agent** - Use when:
+   - The user asks about weather, temperature, rain, sunshine, humidity
+   - The question is about forecast
+   - The user needs weather conditions to plan
+   - Example: "Thời tiết hôm nay thế nào?", "Cuối tuần có mưa không?", "Nhiệt độ bao nhiêu?"
 
-2. **travel_information_agent** - Giao cho agent này khi:
-   - Hỏi về địa điểm du lịch, tham quan, check-in
-   - Tìm kiếm nhà hàng, quán ăn, quán cafe
-   - Hỏi về khách sạn, resort, nơi lưu trú
-   - Hỏi về sự kiện, lễ hội, festival
-   - Cần gợi ý lịch trình, tour
-   - Hỏi về bãi biển, núi, chùa, bảo tàng, cầu
-   - Ví dụ: "Gợi ý quán cafe đẹp?", "Khách sạn 5 sao ở đâu?", "Lễ hội tháng 6 có gì?"
+2. **travel_information_agent** - Use when:
+   - The user asks about places to visit, sightseeing, check-in
+   - Searching for restaurants, eateries, cafes
+   - Asking about hotels, resorts, accommodations
+   - Asking about events, festivals
+   - Needs itinerary/tour suggestions
+   - Asking about beaches, mountains, temples, museums, bridges
+   - Example: "Gợi ý quán cafe đẹp?", "Khách sạn 5 sao ở đâu?", "Lễ hội tháng 6 có gì?"
 
-3. **Xử lý câu hỏi phức hợp**:
-   - Nếu câu hỏi vừa liên quan thời tiết VÀ địa điểm → Ưu tiên weather_agent trước, sau đó travel_information_agent
-   - Ví dụ: "Thời tiết cuối tuần thế nào, gợi ý chỗ đi chơi?" → weather_agent trước
+3. **Out of scope**:
+   - If not related to Da Nang travel → politely refuse in Vietnamese
 
-4. **Câu hỏi không thuộc phạm vi**:
-   - Nếu không liên quan đến du lịch Đà Nẵng → Trả lời lịch sự rằng bạn chỉ hỗ trợ thông tin du lịch Đà Nẵng
 
-PHÂN TÍCH Ý ĐỊNH:
-Trước khi phân công, hãy xác định:
-- Chủ đề chính của câu hỏi là gì?
-- Người dùng cần thông tin gì cụ thể?
-- Agent nào có khả năng trả lời tốt nhất?
-
-User hỏi: {{user_input}}
+<user>{{user_input}}</user>
 """
 
 def create_supervisor_agent():
@@ -142,7 +140,7 @@ def reset_supervisor():
     with _supervisor_lock:
         _supervisor_instance = None
 
-def run_supervisor_query(query: str, use_singleton: bool = True):
+def run_supervisor_query(query: str, use_singleton: bool = True, print_output: bool = True):
     """
     Chạy query qua supervisor.
     Args:
@@ -165,12 +163,30 @@ def run_supervisor_query(query: str, use_singleton: bool = True):
     
     if "messages" in response and response["messages"]:
         results = []
+        seen = set()
         for msg in response["messages"]:
             content = msg.content if hasattr(msg, 'content') else msg
             if content and not any(s in content.lower() for s in ["transferred to", "transferring", "successfully transfer"]):
                 if content != query:
-                    results.append(content)
-                    print(content)
+                    cleaned = str(content)
+                    if "<internal>" in cleaned.lower():
+                        blocks = re.findall(
+                            r"<internal>(.*?)</internal>",
+                            cleaned,
+                            flags=re.IGNORECASE | re.DOTALL,
+                        )
+                        if blocks:
+                            cleaned = "\n\n".join(block.strip() for block in blocks if block.strip())
+                        else:
+                            cleaned = cleaned.replace("<internal>", "").replace("</internal>", "")
+                    cleaned = cleaned.strip()
+                    if cleaned:
+                        key = " ".join(cleaned.split())
+                        if key not in seen:
+                            seen.add(key)
+                            results.append(cleaned)
+                            if print_output:
+                                print(cleaned)
         return results
     else:
         print("⚠️ Không có trường 'messages' hoặc không có kết quả từ sub-agent.")

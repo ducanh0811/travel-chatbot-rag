@@ -4,7 +4,10 @@ import shutil
 from datetime import datetime
 from dotenv import load_dotenv
 from concurrent.futures import ThreadPoolExecutor
-from langchain.schema import Document
+try:
+    from langchain.schema import Document
+except ModuleNotFoundError:
+    from langchain_core.documents import Document
 from langchain_community.vectorstores import Chroma
 from langchain_community.vectorstores.utils import filter_complex_metadata
 from langchain_openai import OpenAIEmbeddings

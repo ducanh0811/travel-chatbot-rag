@@ -4,6 +4,7 @@ from typing import Optional, Dict, List
 from datetime import datetime
 import logging
 import time
+import re
 from Supervisor import (
     get_supervisor_instance,
     get_weather_agent_instance,
@@ -12,6 +13,7 @@ from Supervisor import (
     health_check,
     classify_query,
 )
+from summarizer import ConversationSummarizer
 import uuid
 import threading
 
@@ -61,6 +63,8 @@ class ConversationMemory:
         session = {
             "id": session_id,
             "history": [],
+            "summary": "",
+            "summary_message_count": 0,
             "created_at": datetime.now().timestamp(),
             "last_access": datetime.now().timestamp()
         }
@@ -97,6 +101,41 @@ class ConversationMemory:
                 context_parts.append(f"{role}: {msg['content']}")
             
             return "\n".join(context_parts)
+
+    def get_summary(self, session_id: str) -> str:
+        """Lấy tóm tắt hội thoại của session"""
+        with self._lock:
+            session = self.sessions.get(session_id)
+            if not session:
+                return ""
+            return session.get("summary", "")
+
+    def update_summary(self, session_id: str, summarizer: ConversationSummarizer, min_new_messages: int = 4) -> str:
+        """Cập nhật tóm tắt hội thoại bằng summarizer"""
+        with self._lock:
+            session = self.sessions.get(session_id)
+            if not session:
+                return ""
+            history = list(session.get("history", []))
+            previous_summary = session.get("summary", "")
+            last_count = session.get("summary_message_count", 0)
+
+        if len(history) - last_count < min_new_messages:
+            return previous_summary
+
+        recent_messages = history[-summarizer.max_recent_messages :]
+        try:
+            new_summary = summarizer.summarize(recent_messages, previous_summary)
+        except Exception:
+            return previous_summary
+
+        with self._lock:
+            session = self.sessions.get(session_id)
+            if not session:
+                return previous_summary
+            session["summary"] = new_summary
+            session["summary_message_count"] = len(history)
+        return new_summary
     
     def clear_session(self, session_id: str):
         """Xóa session"""
@@ -127,6 +166,7 @@ class ConversationMemory:
 
 # Global memory instance
 conversation_memory = ConversationMemory()
+conversation_summarizer = ConversationSummarizer()
 
 # ============ REQUEST/RESPONSE MODELS ============
 class QueryRequest(BaseModel):
@@ -178,8 +218,12 @@ async def ask_agent(data: QueryRequest):
     enhanced_query = query
     has_context = False
     
+    summary_message = None
     if data.use_context:
+        summary = conversation_memory.get_summary(session_id)
         context = conversation_memory.get_context(session_id, last_n=3)
+        if summary:
+            summary_message = f"Tóm tắt hội thoại trước đó:\n{summary}"
         if context:
             enhanced_query = f"""
 Lịch sử hội thoại gần đây:
@@ -201,24 +245,42 @@ Hãy trả lời câu hỏi mới, có thể tham khảo lịch sử hội tho�
         else:
             agent = get_supervisor_instance()
 
-        result = agent.invoke({"messages": [{"role": "user", "content": enhanced_query}]})
+        messages_payload = []
+        if summary_message:
+            messages_payload.append({"role": "assistant", "content": summary_message})
+        messages_payload.append({"role": "user", "content": enhanced_query})
+
+        result = agent.invoke({"messages": messages_payload})
         messages = result.get("messages", [])
-        response_texts = []
+        final_response = None
 
-        for msg in messages:
+        for msg in reversed(messages):
             content = getattr(msg, "content", msg)
-            if content and not any(kw in content.lower() for kw in ["transferred to", "transferring", "successfully transfer"]):
+            if content and not any(kw in str(content).lower() for kw in ["transferred to", "transferring", "successfully transfer"]):
                 if content != query and content != enhanced_query:
-                    response_texts.append(content)
+                    cleaned = str(content)
+                    if "<internal>" in cleaned.lower():
+                        blocks = re.findall(
+                            r"<internal>(.*?)</internal>",
+                            cleaned,
+                            flags=re.IGNORECASE | re.DOTALL,
+                        )
+                        if blocks:
+                            cleaned = "\n\n".join(block.strip() for block in blocks if block.strip())
+                        else:
+                            cleaned = cleaned.replace("<internal>", "").replace("</internal>", "")
+                    cleaned = cleaned.strip()
+                    if cleaned:
+                        final_response = cleaned
+                        break
 
-        if not response_texts:
+        if not final_response:
             final_response = "❌ Không có phản hồi nội dung từ agent."
-        else:
-            final_response = "\n\n".join(response_texts)
         
         # Lưu vào memory
         conversation_memory.add_message(session_id, "user", query)
         conversation_memory.add_message(session_id, "assistant", final_response)
+        conversation_memory.update_summary(session_id, conversation_summarizer)
 
         response = QueryResponse(
             result=final_response,
@@ -251,18 +313,32 @@ async def ask_simple(data: QueryRequest):
 
         result = agent.invoke({"messages": [{"role": "user", "content": query}]})
         messages = result.get("messages", [])
-        response_texts = []
+        final_response = None
 
-        for msg in messages:
+        for msg in reversed(messages):
             content = getattr(msg, "content", msg)
-            if content and not any(kw in content.lower() for kw in ["transferred to", "transferring", "successfully transfer"]):
+            if content and not any(kw in str(content).lower() for kw in ["transferred to", "transferring", "successfully transfer"]):
                 if content != query:
-                    response_texts.append(content)
+                    cleaned = str(content)
+                    if "<internal>" in cleaned.lower():
+                        blocks = re.findall(
+                            r"<internal>(.*?)</internal>",
+                            cleaned,
+                            flags=re.IGNORECASE | re.DOTALL,
+                        )
+                        if blocks:
+                            cleaned = "\n\n".join(block.strip() for block in blocks if block.strip())
+                        else:
+                            cleaned = cleaned.replace("<internal>", "").replace("</internal>", "")
+                    cleaned = cleaned.strip()
+                    if cleaned:
+                        final_response = cleaned
+                        break
 
-        if not response_texts:
+        if not final_response:
             return {"result": "❌ Không có phản hồi nội dung từ agent."}
 
-        response = {"result": "\n\n".join(response_texts)}
+        response = {"result": final_response}
         elapsed_ms = int((time.perf_counter() - start) * 1000)
         logger.info("route=%s session=none ctx=false ms=%s", route, elapsed_ms)
         return response
