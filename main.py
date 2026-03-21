@@ -1,10 +1,21 @@
-from fastapi import FastAPI, Request, HTTPException
+"""
+main.py — Travel Chatbot RAG API
+=================================
+FastAPI server với:
+- Multi-user session management (Redis hoặc in-memory fallback)
+- Context-aware conversation history (ContextBuilder)
+- Multi-agent routing (Supervisor → weather / travel)
+"""
+from fastapi import FastAPI, Request, HTTPException, BackgroundTasks
 from pydantic import BaseModel
 from typing import Optional, Dict, List
 from datetime import datetime
 import logging
 import time
 import re
+import uuid
+import threading
+
 from Supervisor import (
     get_supervisor_instance,
     get_weather_agent_instance,
@@ -14,227 +25,165 @@ from Supervisor import (
     classify_query,
 )
 from summarizer import ConversationSummarizer
-import uuid
-import threading
+from session_store import BaseSessionStore, create_session_store
+from context_builder import ContextBuilder, get_context_builder
 
 logger = logging.getLogger("travel-chatbot")
 logging.basicConfig(level=logging.INFO)
 
 MAX_QUERY_LEN = 500
+SESSION_CLEANUP_INTERVAL = 900  # 15 phút
 
 app = FastAPI(
     title="Travel Chatbot RAG API",
     description="API cho chatbot du lịch Đà Nẵng với RAG và multi-agent",
-    version="2.0.0"
+    version="3.0.0",
 )
 
-# ============ CONVERSATION MEMORY ============
-class ConversationMemory:
-    """
-    Quản lý memory cho các cuộc hội thoại.
-    Lưu trữ lịch sử chat theo session_id.
-    """
-    def __init__(self, max_history: int = 10, ttl_seconds: int = 3600):
-        self.sessions: Dict[str, Dict] = {}
-        self.max_history = max_history
-        self.ttl_seconds = ttl_seconds
-        self._lock = threading.Lock()
-    
-    def get_or_create_session(self, session_id: str) -> Dict:
-        """Lấy hoặc tạo session mới"""
-        with self._lock:
-            now = datetime.now().timestamp()
-            
-            if session_id in self.sessions:
-                session = self.sessions[session_id]
-                # Kiểm tra TTL
-                if now - session["last_access"] > self.ttl_seconds:
-                    # Session hết hạn, tạo mới
-                    session = self._create_new_session(session_id)
-                else:
-                    session["last_access"] = now
-            else:
-                session = self._create_new_session(session_id)
-            
-            return session
-    
-    def _create_new_session(self, session_id: str) -> Dict:
-        """Tạo session mới"""
-        session = {
-            "id": session_id,
-            "history": [],
-            "summary": "",
-            "summary_message_count": 0,
-            "created_at": datetime.now().timestamp(),
-            "last_access": datetime.now().timestamp()
-        }
-        self.sessions[session_id] = session
-        return session
-    
-    def add_message(self, session_id: str, role: str, content: str):
-        """Thêm message vào history"""
-        with self._lock:
-            if session_id in self.sessions:
-                history = self.sessions[session_id]["history"]
-                history.append({
-                    "role": role,
-                    "content": content,
-                    "timestamp": datetime.now().isoformat()
-                })
-                # Giới hạn history
-                if len(history) > self.max_history * 2:
-                    self.sessions[session_id]["history"] = history[-self.max_history * 2:]
-    
-    def get_context(self, session_id: str, last_n: int = 5) -> str:
-        """Lấy context từ history gần nhất"""
-        with self._lock:
-            if session_id not in self.sessions:
-                return ""
-            
-            history = self.sessions[session_id]["history"][-last_n * 2:]
-            if not history:
-                return ""
-            
-            context_parts = []
-            for msg in history:
-                role = "Người dùng" if msg["role"] == "user" else "Trợ lý"
-                context_parts.append(f"{role}: {msg['content']}")
-            
-            return "\n".join(context_parts)
+# ─── Global singletons ────────────────────────────────────────────────────────
+session_store: BaseSessionStore = create_session_store()
+context_builder: ContextBuilder = get_context_builder()
+conversation_summarizer: ConversationSummarizer = ConversationSummarizer()
 
-    def get_summary(self, session_id: str) -> str:
-        """Lấy tóm tắt hội thoại của session"""
-        with self._lock:
-            session = self.sessions.get(session_id)
-            if not session:
-                return ""
-            return session.get("summary", "")
 
-    def update_summary(self, session_id: str, summarizer: ConversationSummarizer, min_new_messages: int = 4) -> str:
-        """Cập nhật tóm tắt hội thoại bằng summarizer"""
-        with self._lock:
-            session = self.sessions.get(session_id)
-            if not session:
-                return ""
-            history = list(session.get("history", []))
-            previous_summary = session.get("summary", "")
-            last_count = session.get("summary_message_count", 0)
-
-        if len(history) - last_count < min_new_messages:
-            return previous_summary
-
-        recent_messages = history[-summarizer.max_recent_messages :]
+# ─── Background cleanup ───────────────────────────────────────────────────────
+def _schedule_cleanup():
+    """Định kỳ dọn session hết hạn (15 phút/lần)."""
+    while True:
+        time.sleep(SESSION_CLEANUP_INTERVAL)
         try:
-            new_summary = summarizer.summarize(recent_messages, previous_summary)
-        except Exception:
-            return previous_summary
+            from session_store import InMemorySessionStore
+            if isinstance(session_store, InMemorySessionStore):
+                cleaned = session_store.cleanup_expired()
+                if cleaned:
+                    logger.info("🧹 Auto-cleaned %s expired sessions", cleaned)
+        except Exception as exc:
+            logger.warning("Cleanup error: %s", exc)
 
-        with self._lock:
-            session = self.sessions.get(session_id)
-            if not session:
-                return previous_summary
-            session["summary"] = new_summary
-            session["summary_message_count"] = len(history)
-        return new_summary
-    
-    def clear_session(self, session_id: str):
-        """Xóa session"""
-        with self._lock:
-            if session_id in self.sessions:
-                del self.sessions[session_id]
-    
-    def cleanup_expired(self):
-        """Dọn dẹp các session hết hạn"""
-        with self._lock:
-            now = datetime.now().timestamp()
-            expired = [
-                sid for sid, session in self.sessions.items()
-                if now - session["last_access"] > self.ttl_seconds
-            ]
-            for sid in expired:
-                del self.sessions[sid]
-            return len(expired)
-    
-    def get_stats(self) -> Dict:
-        """Lấy thống kê memory"""
-        with self._lock:
-            return {
-                "active_sessions": len(self.sessions),
-                "max_history": self.max_history,
-                "ttl_seconds": self.ttl_seconds
-            }
 
-# Global memory instance
-conversation_memory = ConversationMemory()
-conversation_summarizer = ConversationSummarizer()
+_cleanup_thread = threading.Thread(target=_schedule_cleanup, daemon=True)
 
-# ============ REQUEST/RESPONSE MODELS ============
+
+# ─── Request / Response models ────────────────────────────────────────────────
 class QueryRequest(BaseModel):
     query: str
     session_id: Optional[str] = None
-    use_context: bool = True  # Có sử dụng context từ history không
+    use_context: bool = True      # Có inject conversation history không
+
 
 class QueryResponse(BaseModel):
     result: str
     session_id: str
     has_context: bool
 
+
 class SessionRequest(BaseModel):
     session_id: str
 
+
+# ─── Helpers ──────────────────────────────────────────────────────────────────
 def normalize_query(raw: str) -> str:
     return (raw or "").strip()
+
 
 def validate_query(query: str):
     if not query:
         raise HTTPException(status_code=400, detail="Query không được để trống")
     if len(query) > MAX_QUERY_LEN:
-        raise HTTPException(status_code=400, detail=f"Query quá dài (>{MAX_QUERY_LEN} ký tự)")
+        raise HTTPException(
+            status_code=400, detail=f"Query quá dài (>{MAX_QUERY_LEN} ký tự)"
+        )
 
-# ============ STARTUP ============
+
+def _update_summary_async(session_id: str, session_data: dict):
+    """Cập nhật rolling summary sau khi trả lời (non-blocking)."""
+    try:
+        history = session_data.get("history", [])
+        last_count = session_data.get("summary_message_count", 0)
+        if len(history) - last_count < 4:
+            return
+        recent = history[-conversation_summarizer.max_recent_messages:]
+        prev_summary = session_data.get("summary", "")
+        new_summary = conversation_summarizer.summarize(recent, prev_summary)
+        session_store.update_summary(session_id, new_summary)
+    except Exception as exc:
+        logger.warning("Summary update failed for %s: %s", session_id, exc)
+
+
+def _extract_final_response(messages: list, query: str, enhanced_query: str) -> str:
+    """Lọc lấy câu trả lời cuối cùng có nội dung từ danh sách message."""
+    for msg in reversed(messages):
+        content = getattr(msg, "content", msg)
+        if not content:
+            continue
+        content_str = str(content)
+        # Bỏ qua transfer messages
+        if any(
+            kw in content_str.lower()
+            for kw in ["transferred to", "transferring", "successfully transfer"]
+        ):
+            continue
+        # Bỏ qua echo của query
+        if content_str in (query, enhanced_query):
+            continue
+        # Xử lý <internal> tags
+        if "<internal>" in content_str.lower():
+            blocks = re.findall(
+                r"<internal>(.*?)</internal>",
+                content_str,
+                flags=re.IGNORECASE | re.DOTALL,
+            )
+            if blocks:
+                content_str = "\n\n".join(b.strip() for b in blocks if b.strip())
+            else:
+                content_str = re.sub(
+                    r"</?internal>", "", content_str, flags=re.IGNORECASE
+                )
+        content_str = content_str.strip()
+        if content_str:
+            return content_str
+    return "❌ Không có phản hồi nội dung từ agent."
+
+
+# ─── Startup / Shutdown ───────────────────────────────────────────────────────
 @app.on_event("startup")
 async def startup_event():
-    """Khởi tạo supervisor khi server start"""
-    print("Starting Travel Chatbot RAG API...")
-    # Pre-warm supervisor
-    get_supervisor_instance()
-    print("API is ready.")
+    logger.info("🚀 Starting Travel Chatbot RAG API v3.0...")
+    get_supervisor_instance()      # Pre-warm supervisor
+    _cleanup_thread.start()        # Bắt đầu background cleanup
+    logger.info("✅ API is ready.")
 
-# ============ ENDPOINTS ============
+
+# ─── Main endpoints ───────────────────────────────────────────────────────────
 @app.post("/ask", response_model=QueryResponse)
-async def ask_agent(data: QueryRequest):
+async def ask_agent(data: QueryRequest, background_tasks: BackgroundTasks):
     """
-    Endpoint chính để hỏi chatbot.
-    Hỗ trợ conversation memory qua session_id.
+    Endpoint chính — hỏi chatbot với conversation memory.
+
+    - Tự tạo session_id nếu không có
+    - Inject lịch sử hội thoại và context hint vào query
+    - Context hint giúp RAG hiểu follow-up questions ("ở đó", "loại đó")
     """
     query = normalize_query(data.query)
     validate_query(query)
-    
-    # Tạo hoặc lấy session
+
+    # ── Session ──────────────────────────────────────────────────────────────
     session_id = data.session_id or str(uuid.uuid4())
-    session = conversation_memory.get_or_create_session(session_id)
-    
-    # Xây dựng query với context nếu cần
-    enhanced_query = query
-    has_context = False
-    
-    summary_message = None
-    if data.use_context:
-        summary = conversation_memory.get_summary(session_id)
-        context = conversation_memory.get_context(session_id, last_n=3)
-        if summary:
-            summary_message = f"Tóm tắt hội thoại trước đó:\n{summary}"
-        if context:
-            enhanced_query = f"""
-Lịch sử hội thoại gần đây:
-{context}
+    session_data = session_store.get_or_create(session_id)
 
-Câu hỏi mới: {query}
+    # ── Build context ─────────────────────────────────────────────────────────
+    agent_ctx = context_builder.build(session_data, query) if data.use_context else None
 
-Hãy trả lời câu hỏi mới, có thể tham khảo lịch sử hội thoại nếu liên quan.
-"""
-            has_context = True
-    
+    has_context = agent_ctx.has_context if agent_ctx else False
+    enhanced_query = agent_ctx.enhanced_query if agent_ctx else query
+
+    # Nếu có RAG hint, nhúng vào query để travel agent dùng khi gọi rag_tool
+    if agent_ctx and not agent_ctx.rag_hint.is_empty():
+        enhanced_query = context_builder.enrich_rag_query(
+            agent_ctx.enhanced_query, agent_ctx.rag_hint
+        )
+
+    # ── Routing & invoke ───────────────────────────────────────────────────────
     start = time.perf_counter()
     try:
         route = classify_query(query)
@@ -246,61 +195,47 @@ Hãy trả lời câu hỏi mới, có thể tham khảo lịch sử hội tho�
             agent = get_supervisor_instance()
 
         messages_payload = []
-        if summary_message:
-            messages_payload.append({"role": "assistant", "content": summary_message})
+        if agent_ctx and agent_ctx.summary_message:
+            messages_payload.append(
+                {"role": "assistant", "content": agent_ctx.summary_message}
+            )
         messages_payload.append({"role": "user", "content": enhanced_query})
 
         result = agent.invoke({"messages": messages_payload})
         messages = result.get("messages", [])
-        final_response = None
+        final_response = _extract_final_response(messages, query, enhanced_query)
 
-        for msg in reversed(messages):
-            content = getattr(msg, "content", msg)
-            if content and not any(kw in str(content).lower() for kw in ["transferred to", "transferring", "successfully transfer"]):
-                if content != query and content != enhanced_query:
-                    cleaned = str(content)
-                    if "<internal>" in cleaned.lower():
-                        blocks = re.findall(
-                            r"<internal>(.*?)</internal>",
-                            cleaned,
-                            flags=re.IGNORECASE | re.DOTALL,
-                        )
-                        if blocks:
-                            cleaned = "\n\n".join(block.strip() for block in blocks if block.strip())
-                        else:
-                            cleaned = cleaned.replace("<internal>", "").replace("</internal>", "")
-                    cleaned = cleaned.strip()
-                    if cleaned:
-                        final_response = cleaned
-                        break
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
 
-        if not final_response:
-            final_response = "❌ Không có phản hồi nội dung từ agent."
-        
-        # Lưu vào memory
-        conversation_memory.add_message(session_id, "user", query)
-        conversation_memory.add_message(session_id, "assistant", final_response)
-        conversation_memory.update_summary(session_id, conversation_summarizer)
+    # ── Persist & update summary ───────────────────────────────────────────────
+    session_store.add_message(session_id, "user", query)
+    session_store.add_message(session_id, "assistant", final_response)
+    # Lấy lại session data mới nhất để truyền cho summary task
+    updated_session = session_store.get(session_id) or session_data
+    background_tasks.add_task(_update_summary_async, session_id, updated_session)
 
-        response = QueryResponse(
-            result=final_response,
-            session_id=session_id,
-            has_context=has_context
-        )
-        elapsed_ms = int((time.perf_counter() - start) * 1000)
-        logger.info("route=%s session=%s ctx=%s ms=%s", route, session_id, has_context, elapsed_ms)
-        return response
+    elapsed_ms = int((time.perf_counter() - start) * 1000)
+    logger.info(
+        "route=%s session=%s ctx=%s ms=%s", route, session_id, has_context, elapsed_ms
+    )
 
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    return QueryResponse(
+        result=final_response,
+        session_id=session_id,
+        has_context=has_context,
+    )
+
 
 @app.post("/ask/simple")
 async def ask_simple(data: QueryRequest):
     """
-    Endpoint đơn giản (không memory) - tương thích ngược.
+    Endpoint đơn giản — không có conversation memory.
+    Tương thích ngược với v2.
     """
     query = normalize_query(data.query)
     validate_query(query)
+
     start = time.perf_counter()
     try:
         route = classify_query(query)
@@ -313,93 +248,138 @@ async def ask_simple(data: QueryRequest):
 
         result = agent.invoke({"messages": [{"role": "user", "content": query}]})
         messages = result.get("messages", [])
-        final_response = None
+        final_response = _extract_final_response(messages, query, query)
 
-        for msg in reversed(messages):
-            content = getattr(msg, "content", msg)
-            if content and not any(kw in str(content).lower() for kw in ["transferred to", "transferring", "successfully transfer"]):
-                if content != query:
-                    cleaned = str(content)
-                    if "<internal>" in cleaned.lower():
-                        blocks = re.findall(
-                            r"<internal>(.*?)</internal>",
-                            cleaned,
-                            flags=re.IGNORECASE | re.DOTALL,
-                        )
-                        if blocks:
-                            cleaned = "\n\n".join(block.strip() for block in blocks if block.strip())
-                        else:
-                            cleaned = cleaned.replace("<internal>", "").replace("</internal>", "")
-                    cleaned = cleaned.strip()
-                    if cleaned:
-                        final_response = cleaned
-                        break
+    except Exception as exc:
+        return {"error": str(exc)}
 
-        if not final_response:
-            return {"result": "❌ Không có phản hồi nội dung từ agent."}
+    elapsed_ms = int((time.perf_counter() - start) * 1000)
+    logger.info("route=%s session=none ctx=false ms=%s", route, elapsed_ms)
+    return {"result": final_response}
 
-        response = {"result": final_response}
-        elapsed_ms = int((time.perf_counter() - start) * 1000)
-        logger.info("route=%s session=none ctx=false ms=%s", route, elapsed_ms)
-        return response
 
-    except Exception as e:
-        return {"error": str(e)}
+# ─── Session endpoints ────────────────────────────────────────────────────────
+@app.get("/session/{session_id}/history")
+async def get_session_history(session_id: str):
+    """Lấy toàn bộ lịch sử hội thoại của session."""
+    session = session_store.get(session_id)
+    if not session:
+        raise HTTPException(status_code=404, detail=f"Session '{session_id}' không tồn tại")
+    return {
+        "session_id": session_id,
+        "history": session.get("history", []),
+        "message_count": len(session.get("history", [])),
+        "created_at": datetime.fromtimestamp(session["created_at"]).isoformat(),
+        "last_access": datetime.fromtimestamp(session["last_access"]).isoformat(),
+    }
+
+
+@app.get("/session/{session_id}/summary")
+async def get_session_summary(session_id: str):
+    """Lấy rolling summary của hội thoại — hữu ích để hiển thị cho user."""
+    session = session_store.get(session_id)
+    if not session:
+        raise HTTPException(status_code=404, detail=f"Session '{session_id}' không tồn tại")
+    return {
+        "session_id": session_id,
+        "summary": session.get("summary", ""),
+        "message_count": len(session.get("history", [])),
+        "summary_covers_messages": session.get("summary_message_count", 0),
+    }
+
+
+@app.get("/session/{session_id}/context")
+async def get_session_context(session_id: str):
+    """
+    Debug endpoint — trả về context hint được trích xuất từ lịch sử.
+    Hữu ích để kiểm tra xem chatbot đang hiểu ngữ cảnh đúng không.
+    """
+    session = session_store.get(session_id)
+    if not session:
+        raise HTTPException(status_code=404, detail=f"Session '{session_id}' không tồn tại")
+
+    agent_ctx = context_builder.build(session, "[debug]")
+    hint = agent_ctx.rag_hint
+
+    return {
+        "session_id": session_id,
+        "detected_districts": hint.districts,
+        "detected_categories": hint.categories,
+        "detected_star_ratings": hint.star_ratings,
+        "detected_price_prefs": hint.price_prefs,
+        "has_context": agent_ctx.has_context,
+        "summary": session.get("summary", ""),
+        "recent_history": session.get("history", [])[-6:],
+    }
+
 
 @app.post("/session/clear")
 async def clear_session(data: SessionRequest):
-    """Xóa session và history"""
-    conversation_memory.clear_session(data.session_id)
-    return {"message": f"Đã xóa session {data.session_id}"}
+    """Xóa session và toàn bộ history."""
+    session_store.clear(data.session_id)
+    return {"message": f"Đã xóa session '{data.session_id}'"}
 
-@app.get("/session/{session_id}/history")
-async def get_session_history(session_id: str):
-    """Lấy lịch sử hội thoại của session"""
-    session = conversation_memory.get_or_create_session(session_id)
-    return {
-        "session_id": session_id,
-        "history": session["history"],
-        "created_at": datetime.fromtimestamp(session["created_at"]).isoformat()
-    }
 
-@app.get("/health")
-async def health():
-    """Health check endpoint"""
-    supervisor_status = health_check()
-    memory_stats = conversation_memory.get_stats()
-    
-    return {
-        "status": "healthy",
-        "timestamp": datetime.now().isoformat(),
-        "supervisor": supervisor_status,
-        "memory": memory_stats
-    }
-
+# ─── Admin endpoints ──────────────────────────────────────────────────────────
 @app.post("/admin/reset-supervisor")
 async def admin_reset_supervisor():
-    """Reset supervisor (admin only)"""
+    """Reset và tái khởi tạo supervisor agent."""
     reset_supervisor()
-    # Re-initialize
     get_supervisor_instance()
     return {"message": "Supervisor đã được reset và khởi tạo lại"}
 
+
 @app.post("/admin/cleanup-sessions")
 async def admin_cleanup_sessions():
-    """Dọn dẹp sessions hết hạn"""
-    cleaned = conversation_memory.cleanup_expired()
-    return {"message": f"Đã dọn dẹp {cleaned} sessions hết hạn"}
+    """Dọn dẹp sessions hết hạn (chỉ áp dụng với in-memory backend)."""
+    from session_store import InMemorySessionStore
+    if isinstance(session_store, InMemorySessionStore):
+        cleaned = session_store.cleanup_expired()
+        return {"message": f"Đã dọn dẹp {cleaned} sessions hết hạn"}
+    return {"message": "Redis backend tự quản lý TTL, không cần cleanup thủ công"}
+
+
+@app.get("/admin/sessions")
+async def admin_list_sessions():
+    """Liệt kê tất cả session đang hoạt động."""
+    ids = session_store.list_all_ids()
+    return {
+        "active_session_count": len(ids),
+        "session_ids": ids,
+    }
+
+
+# ─── Health & Root ────────────────────────────────────────────────────────────
+@app.get("/health")
+async def health():
+    """Health check endpoint."""
+    supervisor_status = health_check()
+    store_stats = session_store.get_stats()
+    return {
+        "status": "healthy",
+        "version": "3.0.0",
+        "timestamp": datetime.now().isoformat(),
+        "supervisor": supervisor_status,
+        "session_store": store_stats,
+    }
+
 
 @app.get("/")
 async def root():
-    """Root endpoint"""
+    """Root endpoint — danh sách API."""
     return {
         "name": "Travel Chatbot RAG API",
-        "version": "2.0.0",
+        "version": "3.0.0",
         "endpoints": {
-            "POST /ask": "Hỏi chatbot (có memory)",
-            "POST /ask/simple": "Hỏi chatbot (không memory)",
-            "GET /health": "Health check",
+            "POST /ask": "Hỏi chatbot (có conversation memory & context)",
+            "POST /ask/simple": "Hỏi chatbot (không memory, tương thích ngược)",
+            "GET  /health": "Health check",
+            "GET  /session/{id}/history": "Lịch sử hội thoại",
+            "GET  /session/{id}/summary": "Tóm tắt hội thoại",
+            "GET  /session/{id}/context": "Debug: context hints đã nhận biết",
             "POST /session/clear": "Xóa session",
-            "GET /session/{id}/history": "Lấy lịch sử session"
-        }
+            "GET  /admin/sessions": "Danh sách sessions đang hoạt động",
+            "POST /admin/reset-supervisor": "Reset supervisor agent",
+            "POST /admin/cleanup-sessions": "Dọn session hết hạn",
+        },
     }

@@ -7,8 +7,6 @@ from langchain_chroma import Chroma
 from langchain_classic.chains import RetrievalQA
 from langchain.tools import tool
 from langchain_core.prompts import PromptTemplate
-from concurrent.futures import ThreadPoolExecutor
-from functools import lru_cache
 import hashlib
 import time
 
@@ -23,19 +21,28 @@ def load_env():
         raise ValueError("⚠️ Vui lòng thiết lập biến môi trường OPENAI_API_KEY trong .env")
     return api_key
 
-def get_embedding_and_vectorstore():
-    # Khởi tạo embedding và vectorstore song song
-    with ThreadPoolExecutor() as executor:
-        future_embedding = executor.submit(OpenAIEmbeddings)
-        embedding = future_embedding.result()
-        future_vectorstore = executor.submit(
-            lambda: Chroma(
-                persist_directory="chromadb",
-                embedding_function=embedding,
-            )
-        )
-        vectorstore = future_vectorstore.result()
-    return embedding, vectorstore
+# ─── Lazy singleton init ─────────────────────────────────────────────────────
+_embedding: Optional[object] = None
+_vectorstore: Optional[object] = None
+_init_lock = __import__("threading").Lock()
+
+def _get_vectorstore() -> Any:
+    """
+    Lazy singleton — chỉ khởi tạo lần đầu gọi rag_tool.
+    Thread-safe với double-checked locking.
+    """
+    global _embedding, _vectorstore
+    if _vectorstore is None:
+        with _init_lock:
+            if _vectorstore is None:
+                _embedding   = OpenAIEmbeddings()
+                _vectorstore = Chroma(
+                    persist_directory=str(
+                        __import__("pathlib").Path(__file__).parent.parent / "chromadb"
+                    ),
+                    embedding_function=_embedding,
+                )
+    return _vectorstore
 
 # ============ QUERY FILTER EXTRACTION ============
 # Mapping từ khóa → category trong metadata
@@ -287,21 +294,18 @@ def validate_and_clean_output(result: str, query: str) -> str:
     
     return result
 
-# ============ KHỞI TẠO ============
+# ============ KHỞI TẠO (lazy) ============
 load_env()
-embedding, vectorstore = get_embedding_and_vectorstore()
 
 @tool
 def rag_tool(query: str) -> str:
     """
-    Trả lời câu hỏi dựa trên vectorstore đã khởi tạo từ ChromaDB.
+    Trả lời câu hỏi dựa trên vectorstore (ChromaDB).
     Tự động phân tích query để áp dụng filter theo type/district.
+    Vectorstore được khởi tạo lazy — không block khi import module.
     Có cache để tối ưu hiệu năng.
     """
-    global vectorstore, rag_cache
-    
-    if vectorstore is None:
-        raise ValueError("Vectorstore chưa được gán. Vui lòng khởi tạo trong Agent.")
+    vectorstore = _get_vectorstore()
     
     # Extract filters từ query
     filters = extract_filters_from_query(query)
@@ -342,8 +346,11 @@ def rag_tool(query: str) -> str:
 # ============ UTILITY FUNCTIONS ============
 def reload_vectorstore():
     """Hot-reload vectorstore khi dữ liệu thay đổi"""
-    global embedding, vectorstore
-    embedding, vectorstore = get_embedding_and_vectorstore()
+    global _embedding, _vectorstore
+    with _init_lock:
+        _embedding   = None
+        _vectorstore = None
+    _get_vectorstore()   # re-init ngay
     rag_cache.clear()
     return True
 

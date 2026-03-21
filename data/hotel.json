@@ -1,442 +1,580 @@
 [
-    {
-        "name": "Da Nang Mikazuki Japanese Resorts & Spa",
-        "type": "5 sao",
-        "description": "Khu nghỉ dưỡng cao cấp ven biển với công viên nước, hồ bơi, bãi tắm riêng.",
-        "district": "Liên Chiểu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["cao cấp", "gia đình", "ven biển"],
-        "duration_suggested_min": null,
-        "ward": "Phường Hòa Hiệp Nam"
-    },
-    {
-        "name": "Mộc Nhiên Hotel Da Nang",
-        "type": null,
-        "description": "Phòng cơ bản, miễn phí Wi‑Fi, gần biển.",
-        "district": "Liên Chiểu",
-        "Check-in hour": "12:00",
-        "Check-out hour": "12:00",
-        "tags": ["ngân sách", "cơ bản"],
-        "duration_suggested_min": null,
-        "ward": "Phường Hòa Khánh Bắc"
-    },
-    {
-        "name": "Moskva Motel & Apartment Danang",
-        "type": null,
-        "description": "Motel/apartment có sân hiên, Wi‑Fi miễn phí, gần biển.",
-        "district": "Liên Chiểu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["ngân sách", "căn hộ"],
-        "duration_suggested_min": null,
-        "ward": "Phường Hòa Hiệp Nam"
-    },
-    {
-        "name": "OYO 962 Tulip Motel",
-        "type": "2 sao",
-        "description": "Motel giá rẻ, phòng cơ bản, Wi‑Fi.",
-        "district": "Liên Chiểu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["ngân sách", "cơ bản"],
-        "duration_suggested_min": null,
-        "ward": "Phường Hòa Minh"
-    },
-    {
-        "name": "Tango Motel",
-        "type": "2 sao",
-        "description": "Khách sạn bình dân, Wi‑Fi miễn phí.",
-        "district": "Liên Chiểu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["ngân sách", "wifi"],
-        "duration_suggested_min": null,
-        "ward": "Phường Hòa Minh"
-    },
-    {
-        "name": "Dan Nguyen Phat Hotel",
-        "type": "2 sao",
-        "description": "Khách sạn bình dân, Wi‑Fi miễn phí.",
-        "district": "Liên Chiểu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["ngân sách", "wifi"],
-        "duration_suggested_min": null,
-        "ward": "Phường Hòa Hiệp Bắc"
-    },
-    {
-        "name": "Le House Hotel and Studio",
-        "type": "2 sao",
-        "description": "Phòng sạch sẽ, giá khoảng 350k/ngày, tiện nghi cơ bản.",
-        "district": "Liên Chiểu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["ngân sách", "cơ bản"],
-        "duration_suggested_min": null,
-        "ward": "Phường Hòa Minh"
-    },
-    {
-        "name": "Green Hotel Da Nang",
-        "type": "3 sao",
-        "description": "Khách sạn giá cả phải chăng, sạch sẽ, có hồ bơi, đưa đón sân bay, phục vụ phòng 24/7.",
-        "district": "Liên Chiểu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["ngân sách", "hồ bơi", "đưa đón sân bay", "gia đình"],
-        "duration_suggested_min": null,
-        "ward": "Phường Hòa Minh"
-    },
-    {
-        "name": "Đá Đỏ Hotel",
-        "type": null,
-        "description": "Khách sạn hiện đại, phòng VIP & tiêu chuẩn, tiện nghi đầy đủ như minibar, wifi, điều hòa. Có bãi đậu xe, lễ tân 24/7, hỗ trợ đặt tour và đưa đón sân bay.",
-        "district": "Liên Chiểu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["hiện đại", "hỗ trợ tour", "đưa đón sân bay", "đỗ xe"],
-        "duration_suggested_min": null,
-        "ward": "Phường Hòa Minh"
-    },
-    {
-        "name": "Châu Anh Hotel",
-        "type": null,
-        "description": "Khách sạn/apartment giá rẻ, có Wi‑Fi miễn phí, chỗ đậu xe riêng, lễ tân hỗ trợ Anh–Việt, dịch vụ đưa đón sân bay khi đặt trước.",
-        "district": "Liên Chiểu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["ngân sách", "wifi", "đỗ xe miễn phí", "đưa đón sân bay"],
-        "duration_suggested_min": null,
-        "ward": "Phường Hòa Hiệp Nam"
-    },
-    {
-        "name": "Samdi Hotel Đà Nẵng",
-        "type": "4 sao",
-        "description": "Boutique sôi động, spa, hồ bơi, lễ tân 24/7",
-        "district": "Thanh Khê",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["boutique", "spa", "hồ bơi"],
-        "duration_suggested_min": null,
-        "ward": "Thạc Gián"
-    },
-    {
-        "name": "Danang Boutique Hotel",
-        "type": "3 sao",
-        "description": "Hồ bơi ngoài trời, rooftop, minibar",
-        "district": "Thanh Khê",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["boutique", "hồ bơi"],
-        "duration_suggested_min": null,
-        "ward": "Thạc Gián"
-    },
-    {
-        "name": "Santori Hotel Danang Bay",
-        "type": "3 sao",
-        "description": "Gần biển, hồ bơi, spa, dịch vụ đưa đón",
-        "district": "Thanh Khê",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["hồ bơi", "biển"],
-        "duration_suggested_min": null,
-        "ward": "Xuân Hà"
-    },
-    {
-        "name": "Gold Boutique Hotel",
-        "type": "3 sao",
-        "description": "Spa, gần trung tâm, thiết kế tinh tế",
-        "district": "Thanh Khê",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["spa", "trung tâm"],
-        "duration_suggested_min": null,
-        "ward": "Thanh Khê Đông"
-    },
-    {
-        "name": "Vinh Trung Plaza Apartment & Hotel",
-        "type": null,
-        "description": "Căn hộ – khách sạn, gần biển, miễn phí bữa sáng",
-        "district": "Thanh Khê",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["căn hộ", "bữa sáng"],
-        "duration_suggested_min": null,
-        "ward": "Phường Thạc Gián"
-    },
-    {
-        "name": "Avenis Hotel Đà Nẵng",
-        "type": null,
-        "description": "Khách sạn view biển, gần chợ & sông Hàn, hồ bơi",
-        "district": "Thanh Khê",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["biển", "hồ bơi"],
-        "duration_suggested_min": null,
-        "ward": "Thanh Khê Tây"
-    },
-    {
-        "name": "Khách sạn Smile",
-        "type": null,
-        "description": "Phòng superior, minibar, trung tâm",
-        "district": "Thanh Khê",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["trung tâm", "minibar"],
-        "duration_suggested_min": null,
-        "ward": "Xuân Hà"
-    },
-    {
-        "name": "Quốc Thiện Hotel",
-        "type": "2 sao",
-        "description": "Tiện nghi cơ bản, gần trung tâm",
-        "district": "Thanh Khê",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["ngân sách"],
-        "duration_suggested_min": null,
-        "ward": "Phường Xuân Hà"
-    },
-    {
-        "name": "Rose Hotel",
-        "type": "3 sao",
-        "description": "Giá rẻ, free Wi‑Fi, sát trung tâm",
-        "district": "Thanh Khê",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["ngân sách", "wifi"],
-        "duration_suggested_min": null,
-        "ward": "Phường Xuân Hà"
-    },
-    {
-        "name": "Wink Hotel Danang Centre",
-        "type": "4 sao",
-        "description": "Khách sạn trung tâm, hiện đại, minibar, Wi‑Fi miễn phí",
-        "district": "Hải Châu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["trung tâm", "hiện đại", "wifi"],
-        "duration_suggested_min": null,
-        "ward": "Phường Phước Ninh"
-    },
-    {
-        "name": "Khách Sạn & Spa Moonlight Suites",
-        "type": "3 sao",
-        "description": "Khách sạn giá trị tốt, tiện nghi cơ bản",
-        "district": "Hải Châu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["ngân sách"],
-        "duration_suggested_min": null,
-        "ward": "Phường Phước Ninh"
-    },
-    {
-        "name": "Sanouva Danang Hotel",
-        "type": "4 sao",
-        "description": "Hồ bơi ngoài trời, bedding cao cấp, minibar",
-        "district": "Hải Châu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["hồ bơi", "minibar", "trung tâm"],
-        "duration_suggested_min": null,
-        "ward": "Phường Phước Ninh"
-    },
-    {
-        "name": "Hilton Da Nang",
-        "type": "5 sao",
-        "description": "Khách sạn cao cấp, hồ bơi, view sông Hàn",
-        "district": "Hải Châu",
-        "Check-in hour": null,
-        "Check-out hour": null,
-        "tags": ["luxury", "riverview", "pool"],
-        "duration_suggested_min": null,
-        "ward": "Phường Bình Thuận"
-    },
-    {
-        "name": "Vanda Hotel",
-        "type": "4 sao",
-        "description": "Vị trí tốt, sạch sẽ, hồ bơi trong nhà",
-        "district": "Hải Châu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["trung tâm", "hồ bơi", "hiện đại"],
-        "duration_suggested_min": null,
-        "ward": "Phường Phước Ninh"
-    },
-    {
-        "name": "Crowne Plaza Danang City Centre",
-        "type": "5 sao",
-        "description": "Gần sông Hàn, spa, cao cấp",
-        "district": "Hải Châu",
-        "Check-in hour": "15:00",
-        "Check-out hour": "12:00",
-        "tags": ["luxury", "spa", "riverfront"],
-        "duration_suggested_min": null,
-        "ward": "Phường Thạch Thang"
-    },
-    {
-        "name": "Novotel Danang Premier Han River",
-        "type": "5 sao",
-        "description": "Gần sông Hàn, spa, view sông",
-        "district": "Hải Châu",
-        "Check-in hour": "15:00",
-        "Check-out hour": "12:00",
-        "tags": ["luxury", "riverview", "gia đình"],
-        "duration_suggested_min": null,
-        "ward": "Phường Thạch Thang"
-    },
-    {
-        "name": "M Village Hotel Da Nang Centre",
-        "type": "4 sao",
-        "description": "Khách sạn căn hộ, giặt ủi, bếp chung, Wi‑Fi",
-        "district": "Hải Châu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["căn hộ", "giặt ủi", "wifi"],
-        "duration_suggested_min": null,
-        "ward": "Phường Phước Ninh"
-    },
-    {
-        "name": "Brilliant Hotel",
-        "type": "4 sao",
-        "description": "Đánh giá cao, vị trí trung tâm",
-        "district": "Hải Châu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["trung tâm", "được đề xuất"],
-        "duration_suggested_min": null,
-        "ward": "Phường Phước Ninh"
-    },
-    {
-        "name": "HAIAN Riverfront Hotel Da Nang",
-        "type": "4 sao",
-        "description": "View sông Hàn, riverfront",
-        "district": "Hải Châu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["riverfront", "riverview"],
-        "duration_suggested_min": null,
-        "ward": "Phường Phước Ninh"
-    },
-    {
-        "name": "Mường Thanh Luxury Song Han Hotel",
-        "type": "5 sao",
-        "description": "Khách sạn cao cấp, hồ bơi, sông Hàn",
-        "district": "Hải Châu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["luxury", "riverview"],
-        "duration_suggested_min": null,
-        "ward": "Phường Phước Ninh"
-    },
-    {
-        "name": "Gold Plaza Hotel Da Nang",
-        "type": "4 sao",
-        "description": "Gần sân bay, hồ bơi, spa",
-        "district": "Hải Châu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["spa", "hồ bơi", "gần sân bay"],
-        "duration_suggested_min": null,
-        "ward": "Phường Hòa Cường Bắc"
-    },
-    {
-        "name": "LAMANGA Hotel & Suites",
-        "type": "3 sao",
-        "description": "Gần biển, tiện nghi cơ bản, hài lòng",
-        "district": "Hải Châu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["biển gần", "cơ bản"],
-        "duration_suggested_min": null,
-        "ward": "Phường Hòa Cường Bắc"
-    },
-    {
-        "name": "Eden Plaza Đà Nẵng",
-        "type": "4 sao",
-        "description": "Vị trí trung tâm, tiện nghi tốt",
-        "district": "Hải Châu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["trung tâm", "thoải mái"],
-        "duration_suggested_min": null,
-        "ward": "Phường Hòa Cường Bắc"
-    },
-    {
-        "name": "Avora Boutique Hotel Danang",
-        "type": "3 sao",
-        "description": "Boutique, thiết kế đẹp",
-        "district": "Hải Châu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["boutique", "thiết kế"],
-        "duration_suggested_min": null,
-        "ward": "Phường Phước Ninh"
-    },
-    {
-        "name": "The Garden Capsule Hotel",
-        "type": null,
-        "description": "Căn hộ capsule, hiện đại",
-        "district": "Hải Châu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["capsule", "hiện đại"],
-        "duration_suggested_min": null,
-        "ward": "Phường Phước Ninh"
-    },
-    {
-        "name": "G8 Luxury Hotel And Spa Danang",
-        "type": "4 sao",
-        "description": "Spa, view sông, tiện nghi",
-        "district": "Hải Châu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["spa", "riverview", "luxury"],
-        "duration_suggested_min": null,
-        "ward": "Phường Thạch Thang"
-    },
-    {
-        "name": "Satya Da Nang Hotel",
-        "type": "4 sao",
-        "description": "Boutique, vị trí tốt",
-        "district": "Hải Châu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["boutique", "trung tâm"],
-        "duration_suggested_min": null,
-        "ward": "Phường Phước Ninh"
-    },
-    {
-        "name": "Central Hotel & Spa",
-        "type": "3 sao",
-        "description": "Khách sạn + spa, trung tâm",
-        "district": "Hải Châu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["spa", "trung tâm"],
-        "duration_suggested_min": null,
-        "ward": "Phường Phước Ninh"
-    },
-    {
-        "name": "Sun River Hotel",
-        "type": "3 sao",
-        "description": "Gần Chợ Hàn, view sông Hàn",
-        "district": "Hải Châu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["riverview", "trung tâm"],
-        "duration_suggested_min": null,
-        "ward": "Phường Phước Ninh"
-    },
-    {
-        "name": "Happy Day Riverside Hotel & Spa Danang by Haviland",
-        "type": "2 sao",
-        "description": "Khách sạn hiện đại ven sông Hàn, có spa, minibar, Wi‑Fi, lễ tân 24/7, đưa đón sân bay, chỗ đậu xe miễn phí.",
-        "district": "Hải Châu",
-        "Check-in hour": "14:00",
-        "Check-out hour": "12:00",
-        "tags": ["spa", "riverfront", "đưa đón sân bay", "đỗ xe miễn phí", "wifi"],
-        "duration_suggested_min": null,
-        "ward": "Phường Phước Ninh"
-    }
+  {
+    "name": "Da Nang Mikazuki Japanese Resorts & Spa",
+    "type": "5 sao",
+    "description": "Khu nghỉ dưỡng cao cấp ven biển với công viên nước, hồ bơi, bãi tắm riêng.",
+    "district": "Liên Chiểu",
+    "tags": [
+      "cao cấp",
+      "gia đình",
+      "ven biển"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Hòa Hiệp Nam",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Mộc Nhiên Hotel Da Nang",
+    "type": null,
+    "description": "Phòng cơ bản, miễn phí Wi‑Fi, gần biển.",
+    "district": "Liên Chiểu",
+    "tags": [
+      "ngân sách",
+      "cơ bản"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Hòa Khánh Bắc",
+    "open_time": "12:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Moskva Motel & Apartment Danang",
+    "type": null,
+    "description": "Motel/apartment có sân hiên, Wi‑Fi miễn phí, gần biển.",
+    "district": "Liên Chiểu",
+    "tags": [
+      "ngân sách",
+      "căn hộ"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Hòa Hiệp Nam",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "OYO 962 Tulip Motel",
+    "type": "2 sao",
+    "description": "Motel giá rẻ, phòng cơ bản, Wi‑Fi.",
+    "district": "Liên Chiểu",
+    "tags": [
+      "ngân sách",
+      "cơ bản"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Hòa Minh",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Tango Motel",
+    "type": "2 sao",
+    "description": "Khách sạn bình dân, Wi‑Fi miễn phí.",
+    "district": "Liên Chiểu",
+    "tags": [
+      "ngân sách",
+      "wifi"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Hòa Minh",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Dan Nguyen Phat Hotel",
+    "type": "2 sao",
+    "description": "Khách sạn bình dân, Wi‑Fi miễn phí.",
+    "district": "Liên Chiểu",
+    "tags": [
+      "ngân sách",
+      "wifi"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Hòa Hiệp Bắc",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Le House Hotel and Studio",
+    "type": "2 sao",
+    "description": "Phòng sạch sẽ, giá khoảng 350k/ngày, tiện nghi cơ bản.",
+    "district": "Liên Chiểu",
+    "tags": [
+      "ngân sách",
+      "cơ bản"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Hòa Minh",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Green Hotel Da Nang",
+    "type": "3 sao",
+    "description": "Khách sạn giá cả phải chăng, sạch sẽ, có hồ bơi, đưa đón sân bay, phục vụ phòng 24/7.",
+    "district": "Liên Chiểu",
+    "tags": [
+      "ngân sách",
+      "hồ bơi",
+      "đưa đón sân bay",
+      "gia đình"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Hòa Minh",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Đá Đỏ Hotel",
+    "type": null,
+    "description": "Khách sạn hiện đại, phòng VIP & tiêu chuẩn, tiện nghi đầy đủ như minibar, wifi, điều hòa. Có bãi đậu xe, lễ tân 24/7, hỗ trợ đặt tour và đưa đón sân bay.",
+    "district": "Liên Chiểu",
+    "tags": [
+      "hiện đại",
+      "hỗ trợ tour",
+      "đưa đón sân bay",
+      "đỗ xe"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Hòa Minh",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Châu Anh Hotel",
+    "type": null,
+    "description": "Khách sạn/apartment giá rẻ, có Wi‑Fi miễn phí, chỗ đậu xe riêng, lễ tân hỗ trợ Anh–Việt, dịch vụ đưa đón sân bay khi đặt trước.",
+    "district": "Liên Chiểu",
+    "tags": [
+      "ngân sách",
+      "wifi",
+      "đỗ xe miễn phí",
+      "đưa đón sân bay"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Hòa Hiệp Nam",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Samdi Hotel Đà Nẵng",
+    "type": "4 sao",
+    "description": "Boutique sôi động, spa, hồ bơi, lễ tân 24/7",
+    "district": "Thanh Khê",
+    "tags": [
+      "boutique",
+      "spa",
+      "hồ bơi"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Thạc Gián",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Danang Boutique Hotel",
+    "type": "3 sao",
+    "description": "Hồ bơi ngoài trời, rooftop, minibar",
+    "district": "Thanh Khê",
+    "tags": [
+      "boutique",
+      "hồ bơi"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Thạc Gián",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Santori Hotel Danang Bay",
+    "type": "3 sao",
+    "description": "Gần biển, hồ bơi, spa, dịch vụ đưa đón",
+    "district": "Thanh Khê",
+    "tags": [
+      "hồ bơi",
+      "biển"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Xuân Hà",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Gold Boutique Hotel",
+    "type": "3 sao",
+    "description": "Spa, gần trung tâm, thiết kế tinh tế",
+    "district": "Thanh Khê",
+    "tags": [
+      "spa",
+      "trung tâm"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Thanh Khê Đông",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Vinh Trung Plaza Apartment & Hotel",
+    "type": null,
+    "description": "Căn hộ – khách sạn, gần biển, miễn phí bữa sáng",
+    "district": "Thanh Khê",
+    "tags": [
+      "căn hộ",
+      "bữa sáng"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Thạc Gián",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Avenis Hotel Đà Nẵng",
+    "type": null,
+    "description": "Khách sạn view biển, gần chợ & sông Hàn, hồ bơi",
+    "district": "Thanh Khê",
+    "tags": [
+      "biển",
+      "hồ bơi"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Thanh Khê Tây",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Khách sạn Smile",
+    "type": null,
+    "description": "Phòng superior, minibar, trung tâm",
+    "district": "Thanh Khê",
+    "tags": [
+      "trung tâm",
+      "minibar"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Xuân Hà",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Quốc Thiện Hotel",
+    "type": "2 sao",
+    "description": "Tiện nghi cơ bản, gần trung tâm",
+    "district": "Thanh Khê",
+    "tags": [
+      "ngân sách"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Xuân Hà",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Rose Hotel",
+    "type": "3 sao",
+    "description": "Giá rẻ, free Wi‑Fi, sát trung tâm",
+    "district": "Thanh Khê",
+    "tags": [
+      "ngân sách",
+      "wifi"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Xuân Hà",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Wink Hotel Danang Centre",
+    "type": "4 sao",
+    "description": "Khách sạn trung tâm, hiện đại, minibar, Wi‑Fi miễn phí",
+    "district": "Hải Châu",
+    "tags": [
+      "trung tâm",
+      "hiện đại",
+      "wifi"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Phước Ninh",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Khách Sạn & Spa Moonlight Suites",
+    "type": "3 sao",
+    "description": "Khách sạn giá trị tốt, tiện nghi cơ bản",
+    "district": "Hải Châu",
+    "tags": [
+      "ngân sách"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Phước Ninh",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Sanouva Danang Hotel",
+    "type": "4 sao",
+    "description": "Hồ bơi ngoài trời, bedding cao cấp, minibar",
+    "district": "Hải Châu",
+    "tags": [
+      "hồ bơi",
+      "minibar",
+      "trung tâm"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Phước Ninh",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Hilton Da Nang",
+    "type": "5 sao",
+    "description": "Khách sạn cao cấp, hồ bơi, view sông Hàn",
+    "district": "Hải Châu",
+    "tags": [
+      "luxury",
+      "riverview",
+      "pool"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Bình Thuận",
+    "open_time": null,
+    "close_time": null
+  },
+  {
+    "name": "Vanda Hotel",
+    "type": "4 sao",
+    "description": "Vị trí tốt, sạch sẽ, hồ bơi trong nhà",
+    "district": "Hải Châu",
+    "tags": [
+      "trung tâm",
+      "hồ bơi",
+      "hiện đại"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Phước Ninh",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Crowne Plaza Danang City Centre",
+    "type": "5 sao",
+    "description": "Gần sông Hàn, spa, cao cấp",
+    "district": "Hải Châu",
+    "tags": [
+      "luxury",
+      "spa",
+      "riverfront"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Thạch Thang",
+    "open_time": "15:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Novotel Danang Premier Han River",
+    "type": "5 sao",
+    "description": "Gần sông Hàn, spa, view sông",
+    "district": "Hải Châu",
+    "tags": [
+      "luxury",
+      "riverview",
+      "gia đình"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Thạch Thang",
+    "open_time": "15:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "M Village Hotel Da Nang Centre",
+    "type": "4 sao",
+    "description": "Khách sạn căn hộ, giặt ủi, bếp chung, Wi‑Fi",
+    "district": "Hải Châu",
+    "tags": [
+      "căn hộ",
+      "giặt ủi",
+      "wifi"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Phước Ninh",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Brilliant Hotel",
+    "type": "4 sao",
+    "description": "Đánh giá cao, vị trí trung tâm",
+    "district": "Hải Châu",
+    "tags": [
+      "trung tâm",
+      "được đề xuất"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Phước Ninh",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "HAIAN Riverfront Hotel Da Nang",
+    "type": "4 sao",
+    "description": "View sông Hàn, riverfront",
+    "district": "Hải Châu",
+    "tags": [
+      "riverfront",
+      "riverview"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Phước Ninh",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Mường Thanh Luxury Song Han Hotel",
+    "type": "5 sao",
+    "description": "Khách sạn cao cấp, hồ bơi, sông Hàn",
+    "district": "Hải Châu",
+    "tags": [
+      "luxury",
+      "riverview"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Phước Ninh",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Gold Plaza Hotel Da Nang",
+    "type": "4 sao",
+    "description": "Gần sân bay, hồ bơi, spa",
+    "district": "Hải Châu",
+    "tags": [
+      "spa",
+      "hồ bơi",
+      "gần sân bay"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Hòa Cường Bắc",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "LAMANGA Hotel & Suites",
+    "type": "3 sao",
+    "description": "Gần biển, tiện nghi cơ bản, hài lòng",
+    "district": "Hải Châu",
+    "tags": [
+      "biển gần",
+      "cơ bản"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Hòa Cường Bắc",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Eden Plaza Đà Nẵng",
+    "type": "4 sao",
+    "description": "Vị trí trung tâm, tiện nghi tốt",
+    "district": "Hải Châu",
+    "tags": [
+      "trung tâm",
+      "thoải mái"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Hòa Cường Bắc",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Avora Boutique Hotel Danang",
+    "type": "3 sao",
+    "description": "Boutique, thiết kế đẹp",
+    "district": "Hải Châu",
+    "tags": [
+      "boutique",
+      "thiết kế"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Phước Ninh",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "The Garden Capsule Hotel",
+    "type": null,
+    "description": "Căn hộ capsule, hiện đại",
+    "district": "Hải Châu",
+    "tags": [
+      "capsule",
+      "hiện đại"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Phước Ninh",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "G8 Luxury Hotel And Spa Danang",
+    "type": "4 sao",
+    "description": "Spa, view sông, tiện nghi",
+    "district": "Hải Châu",
+    "tags": [
+      "spa",
+      "riverview",
+      "luxury"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Thạch Thang",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Satya Da Nang Hotel",
+    "type": "4 sao",
+    "description": "Boutique, vị trí tốt",
+    "district": "Hải Châu",
+    "tags": [
+      "boutique",
+      "trung tâm"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Phước Ninh",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Central Hotel & Spa",
+    "type": "3 sao",
+    "description": "Khách sạn + spa, trung tâm",
+    "district": "Hải Châu",
+    "tags": [
+      "spa",
+      "trung tâm"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Phước Ninh",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Sun River Hotel",
+    "type": "3 sao",
+    "description": "Gần Chợ Hàn, view sông Hàn",
+    "district": "Hải Châu",
+    "tags": [
+      "riverview",
+      "trung tâm"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Phước Ninh",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  },
+  {
+    "name": "Happy Day Riverside Hotel & Spa Danang by Haviland",
+    "type": "2 sao",
+    "description": "Khách sạn hiện đại ven sông Hàn, có spa, minibar, Wi‑Fi, lễ tân 24/7, đưa đón sân bay, chỗ đậu xe miễn phí.",
+    "district": "Hải Châu",
+    "tags": [
+      "spa",
+      "riverfront",
+      "đưa đón sân bay",
+      "đỗ xe miễn phí",
+      "wifi"
+    ],
+    "duration_suggested_min": null,
+    "ward": "Phường Phước Ninh",
+    "open_time": "14:00",
+    "close_time": "12:00"
+  }
 ]

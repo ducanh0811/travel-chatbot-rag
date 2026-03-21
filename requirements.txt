@@ -14,3 +14,4 @@ uvicorn
 pydantic
 watchdog>=3.0.0
 redis>=5.0.0
+tavily-python>=0.3.0

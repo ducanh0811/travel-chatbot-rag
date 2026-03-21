@@ -1,300 +1,326 @@
-import os
+"""
+load_data.py — Professional Vector Store Loader
+=================================================
+Pipeline nạp dữ liệu vào ChromaDB:
+1. Đọc JSON từ thư mục data/ (absolute path)
+2. Validate & deduplicate theo (name, district)
+3. Dùng DocumentBuilder để tạo 2-3 semantic chunks / item
+4. Upsert ChromaDB với stable SHA1 ID (chỉ update doc đã thay đổi)
+5. Watchdog auto-reload khi file JSON thay đổi
+"""
+from __future__ import annotations
+
 import json
+import logging
+import os
 import shutil
+import threading
+import time
 from datetime import datetime
+from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from typing import Dict, List, Tuple
+
 from dotenv import load_dotenv
-from concurrent.futures import ThreadPoolExecutor
+
 try:
     from langchain.schema import Document
-except ModuleNotFoundError:
+except ImportError:
     from langchain_core.documents import Document
+
 from langchain_community.vectorstores import Chroma
-from langchain_community.vectorstores.utils import filter_complex_metadata
 from langchain_openai import OpenAIEmbeddings
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
-import time
-import threading
 
-# ====== Load API Key ======
+from document_builder import DocumentBuilder
+
+# ─── Config ───────────────────────────────────────────────────────────────────
+logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+logger = logging.getLogger("load_data")
+
+BASE_DIR    = Path(__file__).parent.resolve()
+DATA_DIR    = BASE_DIR / "data"
+CHROMA_DIR  = str(BASE_DIR / "chromadb")
+MAX_BACKUPS = 3   # Số backup giữ lại
+
+DATA_FILES: Dict[str, Path] = {
+    "hotel":       DATA_DIR / "hotel.json",
+    "restaurant":  DATA_DIR / "restaurant.json",
+    "destination": DATA_DIR / "destination.json",
+    "cafe":        DATA_DIR / "cafe.json",
+}
+EVENT_FILE = DATA_DIR / "events.json"
+
+# ─── API key ──────────────────────────────────────────────────────────────────
 load_dotenv()
-openai_api_key = os.environ.get("OPENAI_API_KEY")
-if not openai_api_key:
-    raise ValueError("⚠️ Vui lòng đặt biến môi trường OPENAI_API_KEY trong file .env của bạn.")
 
-# ====== Load dữ liệu địa điểm (cafe, hotel, restaurant, destination) ======
-def load_place_data(data_type: str, path: str) -> list:
-    """Load dữ liệu địa điểm từ file JSON"""
-    if not os.path.exists(path):
-        print(f"⚠️ Không tìm thấy file: {path}")
+def _require_api_key() -> str:
+    key = os.environ.get("OPENAI_API_KEY", "")
+    if not key:
+        raise ValueError("⚠️  Thiếu OPENAI_API_KEY trong .env")
+    return key
+
+
+# ─── Data loading + validation ────────────────────────────────────────────────
+def _load_json(path: Path) -> list:
+    """Load JSON file với validation cơ bản."""
+    if not path.exists():
+        logger.warning("File không tồn tại: %s", path)
         return []
-    
-    with open(path, "r", encoding="utf-8") as f:
-        items = json.load(f)
-    
-    docs = []
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        if not isinstance(data, list):
+            logger.error("File %s phải là JSON array", path.name)
+            return []
+        return data
+    except json.JSONDecodeError as e:
+        logger.error("JSON lỗi trong %s: %s", path.name, e)
+        return []
+
+
+def _deduplicate(items: list, category: str) -> list:
+    """Xóa duplicate theo (name, district). Log các entry bị bỏ."""
+    seen: set = set()
+    result: list = []
     for item in items:
-        name = item.get("name", "Không rõ")
-        desc = item.get("description", "")
-        district = item.get("district", "")
-        item_type = item.get("type", "")
-        ward = item.get("ward", "")
-        
-        if data_type == "hotel":
-            open_time = item.get("Check-in hour", item.get("checkin_time", "Không rõ"))
-            close_time = item.get("Check-out hour", item.get("checkout_time", "Không rõ"))
+        key = (
+            str(item.get("name", "")).strip(),
+            str(item.get("district", "")).strip(),
+        )
+        if key in seen:
+            logger.debug("Duplicate bỏ qua [%s]: %s / %s", category, *key)
         else:
-            open_time = item.get("open_time", "")
-            close_time = item.get("close_time", "")
-        
-        tags = item.get("tags", [])
-        suggested = item.get("duration_suggested_min", "Không rõ")
-        
-        content = (
-            f"{name} ({data_type}) - phường {ward}, quận {district}. "
-            f"Loại: {item_type}. "
-            f"Mô tả: {desc}. "
-            f"Giờ mở: {open_time}, đóng: {close_time}. "
-            f"Thời gian gợi ý: {suggested} phút. "
-            f"Tags: {', '.join(tags) if tags else 'Không có'}"
-        )
-        
-        doc = Document(
-            page_content=content,
-            metadata={
-                "type": item_type or data_type,
-                "name": name,
-                "district": district or None,
-                "ward": ward or None,
-                "category": data_type  # Thêm category để phân biệt
-            }
-        )
-        docs.append(doc)
-    
-    return docs
+            seen.add(key)
+            result.append(item)
+    return result
 
-# ====== Load dữ liệu sự kiện ======
-def load_event_data(path: str = "data/events.json") -> list:
-    """Load dữ liệu sự kiện từ file JSON"""
-    if not os.path.exists(path):
-        print(f"⚠️ Không tìm thấy file sự kiện: {path}")
-        return []
-    
-    with open(path, "r", encoding="utf-8") as f:
-        items = json.load(f)
-    
-    docs = []
-    for item in items:
-        name = item.get("name", "Không rõ")
-        desc = item.get("description", "")
-        district = item.get("district", "")
-        event_type = item.get("type", "sự kiện")
-        ward = item.get("ward", "")
-        start_date = item.get("start_date", "")
-        end_date = item.get("end_date", "")
-        event_time = item.get("time", "")
-        tags = item.get("tags", [])
-        recurring = item.get("recurring", "")
-        month = item.get("month", "")
-        
-        content = (
-            f"Sự kiện: {name} - {event_type}. "
-            f"Địa điểm: phường {ward}, quận {district}. "
-            f"Mô tả: {desc}. "
-            f"Thời gian: từ {start_date} đến {end_date}, bắt đầu lúc {event_time}. "
-            f"Tháng diễn ra: tháng {month}. "
-            f"Tính chất: {recurring if recurring else 'một lần'}. "
-            f"Tags: {', '.join(tags) if tags else 'Không có'}"
-        )
-        
-        doc = Document(
-            page_content=content,
-            metadata={
-                "type": event_type,
-                "name": name,
-                "district": district or None,
-                "ward": ward or None,
-                "category": "event",
-                "month": month,
-                "start_date": start_date,
-                "end_date": end_date
-            }
-        )
-        docs.append(doc)
-    
-    return docs
 
-# ====== Load tất cả dữ liệu ======
-def load_all_data() -> list:
-    """Load tất cả dữ liệu từ các file JSON (song song)"""
-    file_paths = {
-        "hotel": "data/hotel.json",
-        "restaurant": "data/restaurant.json",
-        "destination": "data/destination.json",
-        "cafe": "data/cafe.json"
-    }
-    
-    documents = []
-    
-    with ThreadPoolExecutor() as executor:
-        # Load địa điểm song song
-        place_futures = [
-            executor.submit(load_place_data, data_type, path) 
-            for data_type, path in file_paths.items()
-        ]
-        # Load sự kiện
-        event_future = executor.submit(load_event_data)
-        
-        for future in place_futures:
-            documents.extend(future.result())
-        
-        documents.extend(event_future.result())
-    
-    return documents
+def _validate_item(item: dict, category: str) -> bool:
+    """Kiểm tra required fields. Trả False nếu thiếu name."""
+    name = str(item.get("name", "")).strip()
+    if not name or name.lower() in ("", "none", "null"):
+        logger.warning("Item không có name trong category '%s', bỏ qua.", category)
+        return False
+    return True
 
-# ====== Tạo và Lưu ChromaDB ======
-def save_chromadb(documents: list, persist_dir: str = "chromadb") -> Chroma:
+
+def _load_category(category: str, path: Path) -> Tuple[List[Document], List[str]]:
+    """Load 1 file JSON → Documents + IDs (parallel-safe)."""
+    raw = _load_json(path)
+    raw = _deduplicate(raw, category)
+
+    builder = DocumentBuilder()
+    all_docs, all_ids = [], []
+
+    for item in raw:
+        if not _validate_item(item, category):
+            continue
+        try:
+            docs, ids = builder.build(item, category)
+            all_docs.extend(docs)
+            all_ids.extend(ids)
+        except Exception as exc:
+            logger.error("Lỗi build doc [%s] %s: %s",
+                         category, item.get("name", "?"), exc)
+
+    return all_docs, all_ids
+
+
+def load_all_data() -> Tuple[List[Document], List[str]]:
     """
-    Tạo vector store ChromaDB từ danh sách Document và lưu vào persist_dir.
-    Áp dụng filter_complex_metadata để loại bỏ metadata phức tạp.
+    Load song song tất cả data files.
+    Returns (documents, stable_ids) — parallel lists.
     """
-    # Backup thư mục cũ nếu tồn tại
-    if os.path.exists(persist_dir):
-        backup_dir = f"{persist_dir}_backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-        shutil.copytree(persist_dir, backup_dir)
-        print(f"📦 Đã backup ChromaDB cũ vào: {backup_dir}")
-        shutil.rmtree(persist_dir)
-    
-    # Loại bỏ metadata phức tạp (list, dict)
-    simple_docs = filter_complex_metadata(documents)
-    embedding = OpenAIEmbeddings(openai_api_key=openai_api_key)
-    
-    chroma_store = Chroma.from_documents(
-        documents=simple_docs,
-        embedding=embedding,
-        persist_directory=persist_dir
+    all_docs: List[Document] = []
+    all_ids:  List[str]      = []
+
+    tasks: Dict[str, Path] = {**DATA_FILES, "event": EVENT_FILE}
+
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        future_map = {
+            executor.submit(_load_category, cat, path): cat
+            for cat, path in tasks.items()
+        }
+        for future in as_completed(future_map):
+            cat = future_map[future]
+            try:
+                docs, ids = future.result()
+                all_docs.extend(docs)
+                all_ids.extend(ids)
+                logger.info("  %-12s → %d documents", cat, len(docs))
+            except Exception as exc:
+                logger.error("Load thất bại [%s]: %s", cat, exc)
+
+    return all_docs, all_ids
+
+
+# ─── ChromaDB ─────────────────────────────────────────────────────────────────
+def _rotate_backups(persist_dir: str):
+    """Giữ tối đa MAX_BACKUPS bản backup, xóa bản cũ nhất nếu quá."""
+    parent = Path(persist_dir).parent
+    stem   = Path(persist_dir).name
+    backups = sorted(
+        parent.glob(f"{stem}_backup_*"),
+        key=lambda p: p.stat().st_mtime,
     )
-    
-    print(f"✅ Đã lưu ChromaDB vào thư mục: {persist_dir}")
-    return chroma_store
+    while len(backups) >= MAX_BACKUPS:
+        oldest = backups.pop(0)
+        shutil.rmtree(oldest, ignore_errors=True)
+        logger.info("🗑️  Xóa backup cũ: %s", oldest.name)
 
-# ====== Auto-reload khi JSON thay đổi ======
-class DataFileHandler(FileSystemEventHandler):
-    """Handler để theo dõi thay đổi file JSON"""
-    
-    def __init__(self, callback, debounce_seconds: float = 5.0):
-        self.callback = callback
-        self.debounce_seconds = debounce_seconds
-        self._timer = None
-        self._lock = threading.Lock()
-    
-    def _debounced_callback(self):
+
+def save_chromadb(
+    documents: List[Document],
+    ids: List[str],
+    persist_dir: str = CHROMA_DIR,
+) -> Chroma:
+    """
+    Upsert documents vào ChromaDB.
+    - Lần đầu: tạo mới + backup nếu đã có từ trước
+    - Lần sau: chỉ add/update docs có ID mới hoặc thay đổi
+    """
+    _require_api_key()
+    embedding = OpenAIEmbeddings()
+
+    if os.path.exists(persist_dir):
+        # Backup lần đầu (roll-based)
+        _rotate_backups(persist_dir)
+        backup_name = f"{persist_dir}_backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        shutil.copytree(persist_dir, backup_name)
+        logger.info("📦 Backup → %s", Path(backup_name).name)
+
+    chroma = Chroma(
+        persist_directory=persist_dir,
+        embedding_function=embedding,
+    )
+
+    # Upsert theo batch để tránh rate limit
+    BATCH = 100
+    total = len(documents)
+    for start in range(0, total, BATCH):
+        batch_docs = documents[start : start + BATCH]
+        batch_ids  = ids[start : start + BATCH]
+        chroma.add_documents(documents=batch_docs, ids=batch_ids)
+        logger.info("  Upserted %d/%d", min(start + BATCH, total), total)
+
+    logger.info("✅ ChromaDB saved → %s (%d docs)", persist_dir, total)
+    return chroma
+
+
+# ─── Watchdog auto-reload ──────────────────────────────────────────────────────
+class _DataFileHandler(FileSystemEventHandler):
+    def __init__(self, callback, debounce: float = 5.0):
+        self.callback        = callback
+        self.debounce        = debounce
+        self._timer: threading.Timer | None = None
+        self._lock           = threading.Lock()
+
+    def _trigger(self):
         with self._lock:
             self._timer = None
-        print("🔄 Phát hiện thay đổi dữ liệu, đang rebuild ChromaDB...")
+        logger.info("🔄 Phát hiện thay đổi, đang rebuild ChromaDB...")
         self.callback()
-    
+
+    def _schedule(self):
+        with self._lock:
+            if self._timer:
+                self._timer.cancel()
+            self._timer = threading.Timer(self.debounce, self._trigger)
+            self._timer.start()
+
     def on_modified(self, event):
-        if event.is_directory:
-            return
-        if event.src_path.endswith('.json'):
-            with self._lock:
-                if self._timer:
-                    self._timer.cancel()
-                self._timer = threading.Timer(self.debounce_seconds, self._debounced_callback)
-                self._timer.start()
-    
+        if not event.is_directory and event.src_path.endswith(".json"):
+            self._schedule()
+
     def on_created(self, event):
         self.on_modified(event)
 
-def rebuild_chromadb():
-    """Rebuild ChromaDB từ dữ liệu mới"""
-    try:
-        docs = load_all_data()
-        print(f"📄 Tổng số Document: {len(docs)}")
-        save_chromadb(docs)
-        print("🎉 Rebuild ChromaDB hoàn thành!")
-    except Exception as e:
-        print(f"❌ Lỗi khi rebuild ChromaDB: {e}")
 
-def start_watcher(data_dir: str = "data"):
-    """Bắt đầu theo dõi thư mục data để auto-reload"""
-    if not os.path.exists(data_dir):
-        print(f"⚠️ Thư mục {data_dir} không tồn tại")
-        return None
-    
-    event_handler = DataFileHandler(rebuild_chromadb)
+def rebuild_chromadb():
+    """Full rebuild ChromaDB từ dữ liệu mới nhất."""
+    try:
+        docs, ids = load_all_data()
+        logger.info("📄 Tổng: %d documents (%d items)", len(docs), len(ids))
+        save_chromadb(docs, ids)
+        logger.info("🎉 Rebuild xong!")
+    except Exception as exc:
+        logger.error("❌ Rebuild thất bại: %s", exc)
+
+
+def start_watcher(data_dir: str = str(DATA_DIR)) -> Observer:
+    handler  = _DataFileHandler(rebuild_chromadb)
     observer = Observer()
-    observer.schedule(event_handler, data_dir, recursive=False)
+    observer.schedule(handler, data_dir, recursive=False)
     observer.start()
-    print(f"👀 Đang theo dõi thư mục: {data_dir}")
+    logger.info("👀 Watching: %s", data_dir)
     return observer
 
-def stop_watcher(observer):
-    """Dừng theo dõi"""
+
+def stop_watcher(observer: Observer):
     if observer:
         observer.stop()
         observer.join()
-        print("🛑 Đã dừng theo dõi thư mục data")
+        logger.info("🛑 Watcher stopped")
 
-# ====== CLI Commands ======
+
+# ─── Stats ────────────────────────────────────────────────────────────────────
 def print_stats():
-    """In thống kê dữ liệu"""
-    docs = load_all_data()
-    
-    categories = {}
-    districts = {}
-    
-    for doc in docs:
-        cat = doc.metadata.get("category", "unknown")
-        dist = doc.metadata.get("district", "unknown")
-        
-        categories[cat] = categories.get(cat, 0) + 1
-        if dist:
-            districts[dist] = districts.get(dist, 0) + 1
-    
-    print("\n📊 Thống kê dữ liệu:")
-    print("-" * 40)
-    print("Theo loại:")
-    for cat, count in sorted(categories.items()):
-        print(f"  • {cat}: {count}")
-    print("\nTheo quận:")
-    for dist, count in sorted(districts.items()):
-        print(f"  • {dist}: {count}")
-    print("-" * 40)
-    print(f"Tổng: {len(docs)} documents")
+    docs, ids = load_all_data()
+    cats: Dict[str, int]   = {}
+    dists: Dict[str, int]  = {}
+    chunks: Dict[str, int] = {}
 
-# ====== Main ======
+    for doc in docs:
+        cat   = doc.metadata.get("category", "?")
+        dist  = doc.metadata.get("district", "?")
+        chunk = doc.metadata.get("chunk", "?")
+        cats[cat]  = cats.get(cat, 0) + 1
+        dists[dist] = dists.get(dist, 0) + 1
+        chunks[chunk] = chunks.get(chunk, 0) + 1
+
+    print("\n📊 Thống kê Documents:")
+    print("-" * 45)
+    print("Theo category:")
+    for k, v in sorted(cats.items()):
+        print(f"  • {k}: {v} chunks")
+    print("\nTheo chunk type:")
+    for k, v in sorted(chunks.items()):
+        print(f"  • {k}: {v}")
+    print("\nTheo quận (top 10):")
+    for k, v in sorted(dists.items(), key=lambda x: -x[1])[:10]:
+        print(f"  • {k}: {v}")
+    print("-" * 45)
+    print(f"Tổng: {len(docs)} chunks từ ~{len(ids)//2} địa điểm (est.)")
+
+
+# ─── CLI ──────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     import sys
-    
-    if len(sys.argv) > 1:
-        command = sys.argv[1]
-        
-        if command == "watch":
-            # Chế độ watch - tự động rebuild khi có thay đổi
-            print("🚀 Khởi động chế độ watch...")
-            rebuild_chromadb()
-            observer = start_watcher()
-            try:
-                while True:
-                    time.sleep(1)
-            except KeyboardInterrupt:
-                stop_watcher(observer)
-        
-        elif command == "stats":
-            # In thống kê
-            print_stats()
-        
-        else:
-            print(f"❌ Lệnh không hợp lệ: {command}")
-            print("Các lệnh hỗ trợ: watch, stats")
-    else:
-        # Chế độ mặc định - build một lần
-        print("🔄 Bắt đầu tải dữ liệu...")
-        docs = load_all_data()
-        print(f"📄 Tổng số Document: {len(docs)}")
+
+    cmd = sys.argv[1] if len(sys.argv) > 1 else "build"
+
+    if cmd == "watch":
+        logger.info("🚀 Watch mode — rebuild on JSON change")
+        rebuild_chromadb()
+        observer = start_watcher()
+        try:
+            while True:
+                time.sleep(1)
+        except KeyboardInterrupt:
+            stop_watcher(observer)
+
+    elif cmd == "stats":
         print_stats()
-        print("\n💾 Lưu ChromaDB...")
-        save_chromadb(docs)
-        print("🎉 Hoàn thành!")
+
+    elif cmd == "build":
+        logger.info("🔄 Building ChromaDB...")
+        docs, ids = load_all_data()
+        logger.info("📄 %d documents sẽ được upsert", len(docs))
+        print_stats()
+        save_chromadb(docs, ids)
+
+    else:
+        print(f"Lệnh không hợp lệ: {cmd}")
+        print("Hỗ trợ: build | watch | stats")

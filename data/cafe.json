@@ -6,7 +6,10 @@
     "district": "Thanh Khê",
     "open_time": "07:00",
     "close_time": "22:00",
-    "tags": ["tối giản", "hiện đại"],
+    "tags": [
+      "tối giản",
+      "hiện đại"
+    ],
     "duration_suggested_min": 60,
     "ward": "Thanh Khê Đông"
   },
@@ -17,7 +20,10 @@
     "district": "Thanh Khê",
     "open_time": "07:00",
     "close_time": "17:30",
-    "tags": ["industrial", "specialty"],
+    "tags": [
+      "industrial",
+      "specialty"
+    ],
     "duration_suggested_min": 60,
     "ward": "Tâm Thuận"
   },
@@ -28,7 +34,10 @@
     "district": "Thanh Khê",
     "open_time": "06:30",
     "close_time": "24:00",
-    "tags": ["garden", "romantic"],
+    "tags": [
+      "garden",
+      "romantic"
+    ],
     "duration_suggested_min": 60,
     "ward": "Vĩnh Trung"
   },
@@ -39,7 +48,10 @@
     "district": "Thanh Khê",
     "open_time": "07:00",
     "close_time": "23:00",
-    "tags": ["tối giản", "sáng tạo"],
+    "tags": [
+      "tối giản",
+      "sáng tạo"
+    ],
     "duration_suggested_min": 30,
     "ward": "Thục Gián"
   },
@@ -50,9 +62,12 @@
     "district": "Thanh Khê",
     "open_time": "15:30",
     "close_time": "04:00",
-    "tags": ["rooftop", "buổi tối"],
+    "tags": [
+      "rooftop",
+      "buổi tối"
+    ],
     "duration_suggested_min": 90,
-    "ward": " Chính Gián"
+    "ward": "Chính Gián"
   },
   {
     "name": "MAI Café Flowers & More",
@@ -61,7 +76,10 @@
     "district": "Thanh Khê",
     "open_time": "07:00",
     "close_time": "22:00",
-    "tags": ["hoa", "workshop"],
+    "tags": [
+      "hoa",
+      "workshop"
+    ],
     "duration_suggested_min": 60,
     "ward": "Thanh Khê Đông"
   },
@@ -72,7 +90,10 @@
     "district": "Thanh Khê",
     "open_time": "08:00",
     "close_time": "22:00",
-    "tags": ["retro", "thú cưng"],
+    "tags": [
+      "retro",
+      "thú cưng"
+    ],
     "duration_suggested_min": 45,
     "ward": "Xuân Hà"
   },
@@ -83,7 +104,10 @@
     "district": "Thanh Khê",
     "open_time": "06:00",
     "close_time": "03:00",
-    "tags": ["rộng rãi", "sang trọng"],
+    "tags": [
+      "rộng rãi",
+      "sang trọng"
+    ],
     "duration_suggested_min": 60,
     "ward": "Vĩnh Trung"
   },
@@ -94,7 +118,10 @@
     "district": "Thanh Khê",
     "open_time": "07:00",
     "close_time": "22:00",
-    "tags": ["địa phương", "cổ điển"],
+    "tags": [
+      "địa phương",
+      "cổ điển"
+    ],
     "duration_suggested_min": 60,
     "ward": "Thanh Khê Đông"
   },
@@ -105,7 +132,10 @@
     "district": "Thanh Khê",
     "open_time": "06:30",
     "close_time": "22:00",
-    "tags": ["địa phương", "gia đình"],
+    "tags": [
+      "địa phương",
+      "gia đình"
+    ],
     "duration_suggested_min": 60,
     "ward": "Hòa Khê"
   },
@@ -116,7 +146,10 @@
     "district": "Liên Chiểu",
     "open_time": "07:00",
     "close_time": "22:00",
-    "tags": ["cổ điển", "chụp hình"],
+    "tags": [
+      "cổ điển",
+      "chụp hình"
+    ],
     "duration_suggested_min": 60,
     "ward": "Hòa Minh"
   },
@@ -127,7 +160,10 @@
     "district": "Liên Chiểu",
     "open_time": "7:00",
     "close_time": "22:30",
-    "tags": ["retro", "ấm cúng"],
+    "tags": [
+      "retro",
+      "ấm cúng"
+    ],
     "duration_suggested_min": 60,
     "ward": "Thanh Khê Tây"
   },
@@ -138,7 +174,10 @@
     "district": "Liên Chiểu",
     "open_time": "06:00",
     "close_time": "22:30",
-    "tags": ["hiện đại", "đặc biệt tráng miệng"],
+    "tags": [
+      "hiện đại",
+      "đặc biệt tráng miệng"
+    ],
     "duration_suggested_min": 60,
     "ward": "Thanh Khê Tây"
   },
@@ -149,64 +188,54 @@
     "district": "Liên Chiểu",
     "open_time": "06:30",
     "close_time": "22:30",
-    "tags": ["vườn", "thích hợp học nhóm"],
+    "tags": [
+      "vườn",
+      "thích hợp học nhóm"
+    ],
     "duration_suggested_min": 90,
     "ward": "Hòa Khánh Nam"
   },
   {
     "name": "Saigon Brown Coffee",
     "type": "quán cà phê",
-    "description": "Phong cách Sài Gòn, vườn cúc, thích hợp check‑in đêm.",
+    "description": "Phong cách Sài Gòn, vườn cúc, thích hợp check in đêm.",
     "district": "Liên Chiểu",
     "open_time": "06:30",
     "close_time": "22:30",
-    "tags": ["sài gòn", "không gian đêm"],
+    "tags": [
+      "sài gòn",
+      "không gian đêm"
+    ],
     "duration_suggested_min": 60,
     "ward": "Hòa Minh"
   },
-{
+  {
     "name": "Seed-coffee",
     "type": "quán cà phê",
     "description": "Phong cách vintage hoài cổ, bầu không khí gần gũi với thiên nhiên .",
     "district": "Liên Chiểu",
     "open_time": "06:30",
     "close_time": "22:30",
-    "tags": ["homecafe ", "vintage"],
+    "tags": [
+      "homecafe",
+      "vintage"
+    ],
     "duration_suggested_min": 90,
     "ward": "Hòa Khánh Bắc"
   },
-{
-    "name": "Saigon Brown Coffee",
-    "type": "quán cà phê",
-    "description":"Không gian rộng rãi cho các bé thở sức chơi và gia đình",
-    "district": "Liên Chiểu",
-    "open_time": "06:30",
-    "close_time": "22:30",
-    "tags": ["gia đình ", "thân thiện"],
-    "duration_suggested_min": 60,
-    "ward": "Hòa Khánh Nam"
-  },
-{
+  {
     "name": "Trình cà phê",
     "type": "quán cà phê",
     "description": "Quán được giới trẻ địa phương yêu thích, không gian ấm cúng và gần gũi.",
     "district": "Liên Chiểu",
     "open_time": "06:30",
     "close_time": "22:30",
-    "tags": ["địa phương ", "nổi tiếng"],
+    "tags": [
+      "địa phương",
+      "nổi tiếng"
+    ],
     "duration_suggested_min": 60,
     "ward": "Hòa Khánh Nam"
-  },
-{
-    "name": "Saigon Brown Coffee",
-    "type": "quán cà phê",
-    "description": "Phong cách Sài Gòn, vườn cúc, thích hợp check in đêm.",
-    "district": "Liên Chiểu",
-    "open_time": "06:30",
-    "close_time": "22:30",
-    "tags": ["sài gòn", "không gian đêm"],
-    "duration_suggested_min": 60,
-    "ward": "Hòa Minh"
   },
   {
     "name": "M Coffee",
@@ -215,7 +244,11 @@
     "district": "Cẩm Lệ",
     "open_time": "07:00",
     "close_time": "22:30",
-    "tags": ["K‑pop", "vườn", "check‑in"],
+    "tags": [
+      "K‑pop",
+      "vườn",
+      "check‑in"
+    ],
     "duration_suggested_min": 90,
     "ward": "Hòa Xuân"
   },
@@ -226,7 +259,11 @@
     "district": "Cẩm Lệ",
     "open_time": "06:30",
     "close_time": "22:00",
-    "tags": ["thơ mộng", "yên tĩnh", "vườn"],
+    "tags": [
+      "thơ mộng",
+      "yên tĩnh",
+      "vườn"
+    ],
     "duration_suggested_min": 60,
     "ward": "Hòa Xuân"
   },
@@ -237,7 +274,11 @@
     "district": "Cẩm Lệ",
     "open_time": "07:00",
     "close_time": "23:00",
-    "tags": ["chuỗi", "máy lạnh", "vườn"],
+    "tags": [
+      "chuỗi",
+      "máy lạnh",
+      "vườn"
+    ],
     "duration_suggested_min": 60,
     "ward": "Hòa Xuân"
   },
@@ -248,7 +289,11 @@
     "district": "Cẩm Lệ",
     "open_time": "06:00",
     "close_time": "22:00",
-    "tags": ["vườn", "koi", "rộng rãi"],
+    "tags": [
+      "vườn",
+      "koi",
+      "rộng rãi"
+    ],
     "duration_suggested_min": 90,
     "ward": "Hòa Xuân"
   },
@@ -259,7 +304,11 @@
     "district": "Cẩm Lệ",
     "open_time": "06:00",
     "close_time": "22:00",
-    "tags": ["vườn", "trái cây", "rộng rãi"],
+    "tags": [
+      "vườn",
+      "trái cây",
+      "rộng rãi"
+    ],
     "duration_suggested_min": 90,
     "ward": "Hòa Xuân"
   },
@@ -270,7 +319,11 @@
     "district": "Cẩm Lệ",
     "open_time": "07:00",
     "close_time": "22:00",
-    "tags": ["studio", "vườn", "thư giãn"],
+    "tags": [
+      "studio",
+      "vườn",
+      "thư giãn"
+    ],
     "duration_suggested_min": 90,
     "ward": "Hòa Xuân"
   },
@@ -281,7 +334,11 @@
     "district": "Cẩm Lệ",
     "open_time": "06:30",
     "close_time": "22:00",
-    "tags": ["koi", "thân thiện với gia đình", "vườn"],
+    "tags": [
+      "koi",
+      "thân thiện với gia đình",
+      "vườn"
+    ],
     "duration_suggested_min": 90,
     "ward": "Hòa Xuân"
   },
@@ -292,7 +349,11 @@
     "district": "Cẩm Lệ",
     "open_time": "06:30",
     "close_time": "22:00",
-    "tags": ["hiện đại", "vườn", "rộng rãi"],
+    "tags": [
+      "hiện đại",
+      "vườn",
+      "rộng rãi"
+    ],
     "duration_suggested_min": 90,
     "ward": "Hòa Xuân"
   },
@@ -303,7 +364,11 @@
     "district": "Cẩm Lệ",
     "open_time": "06:00",
     "close_time": "22:00",
-    "tags": ["vườn", "koi", "riêng tư"],
+    "tags": [
+      "vườn",
+      "koi",
+      "riêng tư"
+    ],
     "duration_suggested_min": 90,
     "ward": "Hòa Xuân"
   },
@@ -314,7 +379,11 @@
     "district": "Cẩm Lệ",
     "open_time": "06:00",
     "close_time": "22:00",
-    "tags": ["độc đáo", "góc chụp hình", "trà sữa"],
+    "tags": [
+      "độc đáo",
+      "góc chụp hình",
+      "trà sữa"
+    ],
     "duration_suggested_min": 60,
     "ward": "Hòa Thọ Đông"
   },
@@ -325,62 +394,87 @@
     "district": "Cẩm Lệ",
     "open_time": "06:30",
     "close_time": "22:00",
-    "tags": ["Địa Trung Hải", "koi", "vườn"],
+    "tags": [
+      "Địa Trung Hải",
+      "koi",
+      "vườn"
+    ],
     "duration_suggested_min": 90,
     "ward": "Hòa Thọ Đông"
   },
-{
-  "name": "Tiệm Cà Phê Chú Mạnh",
-  "type": "quán cà phê",
-  "description": "Không gian vintage với bàn ghế gỗ, ô cửa sổ hoài cổ; sân vườn xanh mát, trưng bày tranh nghệ thuật; tổ chức workshop vẽ cuối tuần.",
-  "district": "Cẩm Lệ",
-  "open_time": "06:00",
-  "close_time": "22:30",
-  "tags": ["cổ điển", "vườn", "nghệ thuật", "workshop"],
-  "duration_suggested_min": 90,
-  "ward": "Hòa Thọ Đông"
-},
-{
-  "name": "Rio Garden Coffee",
-  "type": "quán cà phê",
-  "description": "Không gian vườn nhiệt đới, nhiều cây xanh, mát mẻ; decor chill hiện đại, có khu ngoài trời.",
-  "district": "Cẩm Lệ",
-  "open_time": "06:30",
-  "close_time": "23:00",
-  "tags": ["vườn", "nhiệt đới", "thư giãn"],
-  "duration_suggested_min": 90,
-  "ward": "Khuê Trung"
-},
-{
-  "name": "MT Coffee",
-  "type": "quán cà phê",
-  "description": "Không gian đơn giản, thân thiện; phục vụ đa dạng các loại trà & cà phê; decor tone nhẹ, phù hợp tụ tập bạn bè.",
-  "district": "Cẩm Lệ",
-  "open_time": "00:00",
-  "close_time": "24:00",
-  "tags": ["đơn giản", "thân thiện", "trà", "cà phê"],
-  "duration_suggested_min": 60,
-  "ward": "Khuê Trung"
-},
-{
-  "name": "Ri Coffee & Tea",
-  "type": "quán cà phê",
-  "description": "Không gian đơn giản, phục vụ cà phê và đồ uống pha chế; có khu trong nhà và sân vườn nhỏ, giá bình dân.",
-  "district": "Cẩm Lệ",
-  "open_time": "00:00",
-  "close_time": "24:00",
-  "tags": ["đơn giản", "vườn", "giá rẻ"],
-  "duration_suggested_min": 60,
-  "ward": "Khuê Trung"
-},
-{
+  {
+    "name": "Tiệm Cà Phê Chú Mạnh",
+    "type": "quán cà phê",
+    "description": "Không gian vintage với bàn ghế gỗ, ô cửa sổ hoài cổ; sân vườn xanh mát, trưng bày tranh nghệ thuật; tổ chức workshop vẽ cuối tuần.",
+    "district": "Cẩm Lệ",
+    "open_time": "06:00",
+    "close_time": "22:30",
+    "tags": [
+      "cổ điển",
+      "vườn",
+      "nghệ thuật",
+      "workshop"
+    ],
+    "duration_suggested_min": 90,
+    "ward": "Hòa Thọ Đông"
+  },
+  {
+    "name": "Rio Garden Coffee",
+    "type": "quán cà phê",
+    "description": "Không gian vườn nhiệt đới, nhiều cây xanh, mát mẻ; decor chill hiện đại, có khu ngoài trời.",
+    "district": "Cẩm Lệ",
+    "open_time": "06:30",
+    "close_time": "23:00",
+    "tags": [
+      "vườn",
+      "nhiệt đới",
+      "thư giãn"
+    ],
+    "duration_suggested_min": 90,
+    "ward": "Khuê Trung"
+  },
+  {
+    "name": "MT Coffee",
+    "type": "quán cà phê",
+    "description": "Không gian đơn giản, thân thiện; phục vụ đa dạng các loại trà & cà phê; decor tone nhẹ, phù hợp tụ tập bạn bè.",
+    "district": "Cẩm Lệ",
+    "open_time": "00:00",
+    "close_time": "24:00",
+    "tags": [
+      "đơn giản",
+      "thân thiện",
+      "trà",
+      "cà phê"
+    ],
+    "duration_suggested_min": 60,
+    "ward": "Khuê Trung"
+  },
+  {
+    "name": "Ri Coffee & Tea",
+    "type": "quán cà phê",
+    "description": "Không gian đơn giản, phục vụ cà phê và đồ uống pha chế; có khu trong nhà và sân vườn nhỏ, giá bình dân.",
+    "district": "Cẩm Lệ",
+    "open_time": "00:00",
+    "close_time": "24:00",
+    "tags": [
+      "đơn giản",
+      "vườn",
+      "giá rẻ"
+    ],
+    "duration_suggested_min": 60,
+    "ward": "Khuê Trung"
+  },
+  {
     "name": "Chang’s Cafe",
     "type": "quán cà phê",
     "description": "Không gian mở, thoáng mát, nhiều cây xanh; đồ uống đẹp mắt.",
     "district": "Ngũ Hành Sơn",
     "open_time": "07:00",
     "close_time": "16:00",
-    "tags": ["không gian mở", "thiên nhiên"],
+    "tags": [
+      "không gian mở",
+      "thiên nhiên"
+    ],
     "duration_suggested_min": 60,
     "ward": "Khuê Mỹ"
   },
@@ -391,7 +485,10 @@
     "district": "Ngũ Hành Sơn",
     "open_time": "07:00",
     "close_time": "23:00",
-    "tags": ["bên biển", "ấm cúng"],
+    "tags": [
+      "bên biển",
+      "ấm cúng"
+    ],
     "duration_suggested_min": 90,
     "ward": "Bắc Mỹ Phú"
   },
@@ -402,7 +499,11 @@
     "district": "Ngũ Hành Sơn",
     "open_time": "07:00",
     "close_time": "22:00",
-    "tags": ["Phong cách Đà Lạt", "vườn", "chụp hình"],
+    "tags": [
+      "Phong cách Đà Lạt",
+      "vườn",
+      "chụp hình"
+    ],
     "duration_suggested_min": 90,
     "ward": "Bắc Mỹ Phú"
   },
@@ -413,7 +514,10 @@
     "district": "Ngũ Hành Sơn",
     "open_time": "07:00",
     "close_time": "22:00",
-    "tags": ["hiện đại", "specialty"],
+    "tags": [
+      "hiện đại",
+      "specialty"
+    ],
     "duration_suggested_min": 90,
     "ward": "Bắc Mỹ Phú"
   },
@@ -424,7 +528,10 @@
     "district": "Ngũ Hành Sơn",
     "open_time": "06:30",
     "close_time": "22:30",
-    "tags": ["roastery", "tối giản"],
+    "tags": [
+      "roastery",
+      "tối giản"
+    ],
     "duration_suggested_min": 60,
     "ward": "Bắc Mỹ Phú"
   },
@@ -435,7 +542,11 @@
     "district": "Ngũ Hành Sơn",
     "open_time": "06:00",
     "close_time": "22:30",
-    "tags": ["trà sữa", "ngọt", "dễ thương"],
+    "tags": [
+      "trà sữa",
+      "ngọt",
+      "dễ thương"
+    ],
     "duration_suggested_min": 60,
     "ward": "Bắc Mỹ An"
   },
@@ -446,7 +557,10 @@
     "district": "Ngũ Hành Sơn",
     "open_time": "07:00",
     "close_time": "21:00",
-    "tags": ["đơn giản", "ấm cúng"],
+    "tags": [
+      "đơn giản",
+      "ấm cúng"
+    ],
     "duration_suggested_min": 60,
     "ward": "Khuê Mỹ"
   },
@@ -457,7 +571,10 @@
     "district": "Ngũ Hành Sơn",
     "open_time": "06:00",
     "close_time": "22:00",
-    "tags": ["nghệ thuật", "kết hợp"],
+    "tags": [
+      "nghệ thuật",
+      "kết hợp"
+    ],
     "duration_suggested_min": 60,
     "ward": "Hòa Hải"
   },
@@ -468,7 +585,10 @@
     "district": "Ngũ Hành Sơn",
     "open_time": "07:00",
     "close_time": "21:00",
-    "tags": ["ấm cúng", "FPT"],
+    "tags": [
+      "ấm cúng",
+      "FPT"
+    ],
     "duration_suggested_min": 60,
     "ward": "Hòa Hải"
   },
@@ -479,7 +599,10 @@
     "district": "Ngũ Hành Sơn",
     "open_time": "06:00",
     "close_time": "22:00",
-    "tags": ["hiện đại", "đa dạng"],
+    "tags": [
+      "hiện đại",
+      "đa dạng"
+    ],
     "duration_suggested_min": 60,
     "ward": "Bắc Mỹ An"
   },
@@ -490,7 +613,11 @@
     "district": "Ngũ Hành Sơn",
     "open_time": "017:00",
     "close_time": "23:30",
-    "tags": ["vườn", "yên tĩnh", "chụp hình"],
+    "tags": [
+      "vườn",
+      "yên tĩnh",
+      "chụp hình"
+    ],
     "duration_suggested_min": 90,
     "ward": "Khuê Mỹ"
   },
@@ -501,7 +628,10 @@
     "district": "Ngũ Hành Sơn",
     "open_time": "07:00",
     "close_time": "21:00",
-    "tags": ["ngọt", "ấm cúng"],
+    "tags": [
+      "ngọt",
+      "ấm cúng"
+    ],
     "duration_suggested_min": 60,
     "ward": "Bắc Mỹ An"
   },
@@ -512,117 +642,166 @@
     "district": "Ngũ Hành Sơn",
     "open_time": "07:30",
     "close_time": "22:00",
-    "tags": ["ấm cúng", "đơn giản"],
+    "tags": [
+      "ấm cúng",
+      "đơn giản"
+    ],
     "duration_suggested_min": 60,
     "ward": "Bắc Mỹ Phú"
   },
-{
-  "name": "Six On Six Cafe",
-  "type": "quán cà phê",
-  "description": "Không gian mở, sân vườn nhỏ xinh, decor tối giản; phục vụ brunch kiểu Tây và cà phê chất lượng.",
-  "district": "Ngũ Hành Sơn",
-  "open_time": "07:30",
-  "close_time": "21:30",
-  "tags": ["vườn", "tối giản", "brunch"],
-  "duration_suggested_min": 90,
-  "ward": "Bắc Mỹ An"
-},
-{
-  "name": "Roost Coffee Roasters",
-  "type": "quán cà phê",
-  "description": "Không gian biệt thự cổ với sân vườn rộng, nhiều cây xanh; decor kết hợp cổ điển và tối giản; có quầy rang xay ngay tại quán.",
-  "district": "Ngũ Hành Sơn",
-  "open_time": "07:00",
-  "close_time": "22:00",
-  "tags": ["vườn", "roastery", "cổ điển", "yên tĩnh"],
-  "duration_suggested_min": 90,
-  "ward": "Bắc Mỹ An"
-},
-{
-  "name": "LABAN CAFE",
-  "type": "quán cà phê",
-  "description": "Phong cách giản dị, không gian trong nhà thoáng, yên tĩnh – phù hợp trò chuyện và làm việc nhẹ.",
-  "district": "Ngũ Hành Sơn",
-  "open_time": "00:00",
-  "close_time": "24:00",
-  "tags": ["đơn giản", "yên tĩnh"],
-  "duration_suggested_min": 60,
-  "ward": "Bắc Mỹ Phú"
-},
-{
-  "name": "Puna Coffee & Cakes",
-  "type": "quán cà phê",
-  "description": "Không gian nhỏ xinh, yên tĩnh với sân trong có hoa giấy; decor đơn giản – trắng‑nâu – hơi vintage; phục vụ cà phê rang xay tại chỗ, bánh ngọt và brunch kiểu Âu.",
-  "district": "Ngũ Hành Sơn",
-  "open_time": "07:00",
-  "close_time": "22:00",
-  "tags": ["vườn", "cổ điển", "roastery", "brunch"],
-  "duration_suggested_min": 90,
-  "ward": "Bắc Mỹ An"
-},
-{
-  "name": "Dưới Hiên Nhà",
-  "type": "quán cà phê",
-  "description": "Không gian vintage hoài niệm với bàn ghế gỗ mộc mạc dưới hiên nhà, nhiều cây xanh, hoa giấy; decor bình dị và yên tĩnh, phù hợp thư giãn và trò chuyện.",
-  "district": "Ngũ Hành Sơn",
-  "open_time": "06:00 ",
-  "close_time": "22:00",
-  "tags": ["cổ điển", "vườn", "yên tĩnh"],
-  "duration_suggested_min": 90,
-  "ward": "Bắc Mỹ An"
-},
-{
-  "name": "Xóm Mèo Coffee & Petshop",
-  "type": "quán cà phê",
-  "description": "Quán cà phê sân vườn với không gian xanh mát, có hơn 20 mèo thân thiện (có phòng mèo riêng), phục vụ cà phê, trà & đồ uống; decor mộc mạc, gần gũi như nhà gỗ Đà Lạt.",
-  "district": "Ngũ Hành Sơn",
-  "open_time": "08:00",
-  "close_time": "24:00",
-  "tags": ["vườn", "thú cưng", "mèo", "mộc mạc"],
-  "duration_suggested_min": 90,
-  "ward": "Bắc Mỹ Phú"
-},
-{
-  "name": "Đồng Nâu Cafe",
-  "type": "quán cà phê",
-  "description": "Quán 3 tầng rộng rãi, decor hiện đại, nhiều cây xanh; view hướng ra cầu Trần Thị Lý bên dòng sông Hàn, phù hợp học bài, làm việc và tụ tập.",
-  "district": "Ngũ Hành Sơn",
-  "open_time": "06:00",
-  "close_time": "22:00",
-  "tags": ["hiện đại", "vườn", "view sông", "thích hợp làm việc"],
-  "duration_suggested_min": 90,
-  "ward": "Bắc Mỹ Phú"
-},
-{
-  "name": "Bách Kafe",
-  "type": "quán cà phê",
-  "description": "Không gian Wabi-Sabi tối giản, 2 tầng vừa phải, thiết kế gỗ – kính, nhiều cây xanh; chuyên các loại cà phê rang xay, salted coffee và fresh fruit tea.",
-  "district": "Ngũ Hành Sơn",
-  "open_time": "06:30",
-  "close_time": "24:00",
-  "tags": ["Wabi‑Sabi", "roastery", "vườn", "thư giãn"],
-  "duration_suggested_min": 90,
-  "ward": "Bắc Mỹ Phú"
-},
-{
-  "name": "Venus Coffee",
-  "type": "quán cà phê",
-  "description": "Không gian rộng rãi, thoáng mát với sân vườn, hồ cá Koi; decor xanh‑trắng tươi mát, có khu vực vui chơi cho trẻ em và ghế xích đu; phục vụ cà phê, trà, nước ép, kem và đồ Á–Âu nhẹ.",
-  "district": "Ngũ Hành Sơn",
-  "open_time": "07:00",
-  "close_time": "22:00",
-  "tags": ["vườn", "koi", "thân thiện với gia đình", "view sông", "thư giãn"],
-  "duration_suggested_min": 90,
-  "ward": "Bắc Mỹ An"
-},
-{
+  {
+    "name": "Six On Six Cafe",
+    "type": "quán cà phê",
+    "description": "Không gian mở, sân vườn nhỏ xinh, decor tối giản; phục vụ brunch kiểu Tây và cà phê chất lượng.",
+    "district": "Ngũ Hành Sơn",
+    "open_time": "07:30",
+    "close_time": "21:30",
+    "tags": [
+      "vườn",
+      "tối giản",
+      "brunch"
+    ],
+    "duration_suggested_min": 90,
+    "ward": "Bắc Mỹ An"
+  },
+  {
+    "name": "Roost Coffee Roasters",
+    "type": "quán cà phê",
+    "description": "Không gian biệt thự cổ với sân vườn rộng, nhiều cây xanh; decor kết hợp cổ điển và tối giản; có quầy rang xay ngay tại quán.",
+    "district": "Ngũ Hành Sơn",
+    "open_time": "07:00",
+    "close_time": "22:00",
+    "tags": [
+      "vườn",
+      "roastery",
+      "cổ điển",
+      "yên tĩnh"
+    ],
+    "duration_suggested_min": 90,
+    "ward": "Bắc Mỹ An"
+  },
+  {
+    "name": "LABAN CAFE",
+    "type": "quán cà phê",
+    "description": "Phong cách giản dị, không gian trong nhà thoáng, yên tĩnh – phù hợp trò chuyện và làm việc nhẹ.",
+    "district": "Ngũ Hành Sơn",
+    "open_time": "00:00",
+    "close_time": "24:00",
+    "tags": [
+      "đơn giản",
+      "yên tĩnh"
+    ],
+    "duration_suggested_min": 60,
+    "ward": "Bắc Mỹ Phú"
+  },
+  {
+    "name": "Puna Coffee & Cakes",
+    "type": "quán cà phê",
+    "description": "Không gian nhỏ xinh, yên tĩnh với sân trong có hoa giấy; decor đơn giản – trắng‑nâu – hơi vintage; phục vụ cà phê rang xay tại chỗ, bánh ngọt và brunch kiểu Âu.",
+    "district": "Ngũ Hành Sơn",
+    "open_time": "07:00",
+    "close_time": "22:00",
+    "tags": [
+      "vườn",
+      "cổ điển",
+      "roastery",
+      "brunch"
+    ],
+    "duration_suggested_min": 90,
+    "ward": "Bắc Mỹ An"
+  },
+  {
+    "name": "Dưới Hiên Nhà",
+    "type": "quán cà phê",
+    "description": "Không gian vintage hoài niệm với bàn ghế gỗ mộc mạc dưới hiên nhà, nhiều cây xanh, hoa giấy; decor bình dị và yên tĩnh, phù hợp thư giãn và trò chuyện.",
+    "district": "Ngũ Hành Sơn",
+    "open_time": "06:00",
+    "close_time": "22:00",
+    "tags": [
+      "cổ điển",
+      "vườn",
+      "yên tĩnh"
+    ],
+    "duration_suggested_min": 90,
+    "ward": "Bắc Mỹ An"
+  },
+  {
+    "name": "Xóm Mèo Coffee & Petshop",
+    "type": "quán cà phê",
+    "description": "Quán cà phê sân vườn với không gian xanh mát, có hơn 20 mèo thân thiện (có phòng mèo riêng), phục vụ cà phê, trà & đồ uống; decor mộc mạc, gần gũi như nhà gỗ Đà Lạt.",
+    "district": "Ngũ Hành Sơn",
+    "open_time": "08:00",
+    "close_time": "24:00",
+    "tags": [
+      "vườn",
+      "thú cưng",
+      "mèo",
+      "mộc mạc"
+    ],
+    "duration_suggested_min": 90,
+    "ward": "Bắc Mỹ Phú"
+  },
+  {
+    "name": "Đồng Nâu Cafe",
+    "type": "quán cà phê",
+    "description": "Quán 3 tầng rộng rãi, decor hiện đại, nhiều cây xanh; view hướng ra cầu Trần Thị Lý bên dòng sông Hàn, phù hợp học bài, làm việc và tụ tập.",
+    "district": "Ngũ Hành Sơn",
+    "open_time": "06:00",
+    "close_time": "22:00",
+    "tags": [
+      "hiện đại",
+      "vườn",
+      "view sông",
+      "thích hợp làm việc"
+    ],
+    "duration_suggested_min": 90,
+    "ward": "Bắc Mỹ Phú"
+  },
+  {
+    "name": "Bách Kafe",
+    "type": "quán cà phê",
+    "description": "Không gian Wabi-Sabi tối giản, 2 tầng vừa phải, thiết kế gỗ – kính, nhiều cây xanh; chuyên các loại cà phê rang xay, salted coffee và fresh fruit tea.",
+    "district": "Ngũ Hành Sơn",
+    "open_time": "06:30",
+    "close_time": "24:00",
+    "tags": [
+      "Wabi‑Sabi",
+      "roastery",
+      "vườn",
+      "thư giãn"
+    ],
+    "duration_suggested_min": 90,
+    "ward": "Bắc Mỹ Phú"
+  },
+  {
+    "name": "Venus Coffee",
+    "type": "quán cà phê",
+    "description": "Không gian rộng rãi, thoáng mát với sân vườn, hồ cá Koi; decor xanh‑trắng tươi mát, có khu vực vui chơi cho trẻ em và ghế xích đu; phục vụ cà phê, trà, nước ép, kem và đồ Á–Âu nhẹ.",
+    "district": "Ngũ Hành Sơn",
+    "open_time": "07:00",
+    "close_time": "22:00",
+    "tags": [
+      "vườn",
+      "koi",
+      "thân thiện với gia đình",
+      "view sông",
+      "thư giãn"
+    ],
+    "duration_suggested_min": 90,
+    "ward": "Bắc Mỹ An"
+  },
+  {
     "name": "Son Trà Marina",
     "type": "quán cà phê",
     "description": "Không gian Santorini trắng‑xanh ven biển, có indoor/outdoor, pier riêng; phục vụ cà phê, trà, cocktail, light meals; live music buổi tối.",
     "district": "Sơn Trà",
     "open_time": "07:30",
     "close_time": "20:00",
-    "tags": ["bên biển", "Địa Trung Hải", "nhạc sống"],
+    "tags": [
+      "bên biển",
+      "Địa Trung Hải",
+      "nhạc sống"
+    ],
     "duration_suggested_min": 90,
     "ward": "Thọ Quang"
   },
@@ -633,7 +812,10 @@
     "district": "Sơn Trà",
     "open_time": "06:00",
     "close_time": "23:30",
-    "tags": ["bên biển", "quán bar cà phê"],
+    "tags": [
+      "bên biển",
+      "quán bar cà phê"
+    ],
     "duration_suggested_min": 90,
     "ward": "Nại Hiên Đông"
   },
@@ -644,7 +826,11 @@
     "district": "Sơn Trà",
     "open_time": "07:00",
     "close_time": "23:30",
-    "tags": ["bên biển", "thú cưng", "bia"],
+    "tags": [
+      "bên biển",
+      "thú cưng",
+      "bia"
+    ],
     "duration_suggested_min": 120,
     "ward": "Nại Hiên Đông"
   },
@@ -655,7 +841,10 @@
     "district": "Sơn Trà",
     "open_time": "07:00",
     "close_time": "22:30",
-    "tags": ["quà lưu niệm", "đơn giản"],
+    "tags": [
+      "quà lưu niệm",
+      "đơn giản"
+    ],
     "duration_suggested_min": 60,
     "ward": "Thọ Quang"
   },
@@ -666,7 +855,11 @@
     "district": "Sơn Trà",
     "open_time": "06:30",
     "close_time": "22:30",
-    "tags": ["cabin", "vintage", "chụp hình"],
+    "tags": [
+      "cabin",
+      "vintage",
+      "chụp hình"
+    ],
     "duration_suggested_min": 60,
     "ward": "Nại Hiên Đông"
   },
@@ -677,7 +870,11 @@
     "district": "Sơn Trà",
     "open_time": "07:00",
     "close_time": "22:00",
-    "tags": ["vườn", "acoustic", "thư giãn"],
+    "tags": [
+      "vườn",
+      "acoustic",
+      "thư giãn"
+    ],
     "duration_suggested_min": 90,
     "ward": "An Hải Bắc"
   },
@@ -688,62 +885,93 @@
     "district": "Sơn Trà",
     "open_time": "07:00",
     "close_time": "24:00",
-    "tags": ["hiện đại", "chụp hình"],
+    "tags": [
+      "hiện đại",
+      "chụp hình"
+    ],
     "duration_suggested_min": 90,
     "ward": "An Hải"
   },
-{
-  "name": " Mayaca Aro - Fine coffee & Brunch",
-  "type": "quán cà phê",
-  "description": "Một nơi dành cho những người yêu cà phê, không gian be – đỏ trầm ấm.",
-  "district": "Sơn Trà",
-  "open_time": "07:00",
-  "close_time": "22:00",
-  "tags": ["roastery", "thân thiện", "cà phê sạch"],
-  "duration_suggested_min": 90,
-  "ward": "An Hải"
-},
-{
-  "name": "The Hideout Café",
-  "type": "quán cà phê",
-  "description": "Không gian yên tĩnh, tối giản với sân vườn nhỏ và nội thất gỗ‑xi măng; phục vụ cà phê Arabica, trà trái cây, smoothie, brunch & bánh healthy; dùng ống hút inox/giấy thân thiện môi trường.",
-  "district": "Ngũ Hành Sơn",
-  "open_time": "07:30",
-  "close_time": "22:00",
-  "tags": ["tối giản", "vườn", "brunch", "thân thiện với môi trường", "yên tĩnh"],
-  "duration_suggested_min": 90,
-  "ward": "Bắc Mỹ Phú"
-},
-{
-  "name": "Đây Là Coffee & Bed",
-  "type": "quán cà phê",
-  "description": "Mô hình kết hợp quán cà phê & giường nghỉ; không gian đơn giản ấm cúng với giường bunk/bed riêng tư, gỗ – nâu vàng, có sân ngoài hiên; phục vụ cà phê, trà, bánh ngọt, combo cà phê + nghỉ trưa.",
-  "district": "Sơn Trà",
-  "open_time": "07:00",
-  "close_time": "22:00",
-  "tags": ["cà phê trên giường", "trải nghiệm độc đáo", "nghỉ trưa tiết kiệm", "tối giản", "ấm cúng"],
-  "duration_suggested_min": 120,
-  "ward": "An Hải"
-},
-{
-  "name": "Phin Cũ Cafe",
-  "type": "quán cà phê",
-  "description": "Không gian hoài cổ với nội thất gỗ, đồ vật vintage; sân vườn nhỏ và tầng trên yên tĩnh, nhiều cây xanh; phục vụ cà phê phin truyền thống, cà phê muối, trà, nước ép; thường có đêm nhạc acoustic và workshop nhỏ.",
-  "district": "Sơn Trà",
-  "open_time": "07:00",
-  "close_time": "22:00",
-  "tags": ["vintage", "vườn", "acoustic", "workshop", "cà phê phin"],
-  "duration_suggested_min": 90,
-  "ward": "An Hải "
-},
-{
-  "name": "Myan Coffee 2",
-  "type": "quán cà phê",
-  "description": "Ẩn mình trong hẻm, không gian hoài cổ pha hiện đại với bàn ghế gỗ, kệ sách, cây xanh; có sân hiên, yên tĩnh – phù hợp đọc sách và làm việc.",
-  "district": "Sơn Trà",
-  "open_time": "07:30",
-  "close_time": "22:30",
-  "tags": ["vintage", "vườn", "yên tĩnh", "góc học tập"],
-  "duration_suggested_min": 90,
-  "ward": "An Hải"
-}]
+  {
+    "name": "Mayaca Aro - Fine coffee & Brunch",
+    "type": "quán cà phê",
+    "description": "Một nơi dành cho những người yêu cà phê, không gian be – đỏ trầm ấm.",
+    "district": "Sơn Trà",
+    "open_time": "07:00",
+    "close_time": "22:00",
+    "tags": [
+      "roastery",
+      "thân thiện",
+      "cà phê sạch"
+    ],
+    "duration_suggested_min": 90,
+    "ward": "An Hải"
+  },
+  {
+    "name": "The Hideout Café",
+    "type": "quán cà phê",
+    "description": "Không gian yên tĩnh, tối giản với sân vườn nhỏ và nội thất gỗ‑xi măng; phục vụ cà phê Arabica, trà trái cây, smoothie, brunch & bánh healthy; dùng ống hút inox/giấy thân thiện môi trường.",
+    "district": "Ngũ Hành Sơn",
+    "open_time": "07:30",
+    "close_time": "22:00",
+    "tags": [
+      "tối giản",
+      "vườn",
+      "brunch",
+      "thân thiện với môi trường",
+      "yên tĩnh"
+    ],
+    "duration_suggested_min": 90,
+    "ward": "Bắc Mỹ Phú"
+  },
+  {
+    "name": "Đây Là Coffee & Bed",
+    "type": "quán cà phê",
+    "description": "Mô hình kết hợp quán cà phê & giường nghỉ; không gian đơn giản ấm cúng với giường bunk/bed riêng tư, gỗ – nâu vàng, có sân ngoài hiên; phục vụ cà phê, trà, bánh ngọt, combo cà phê + nghỉ trưa.",
+    "district": "Sơn Trà",
+    "open_time": "07:00",
+    "close_time": "22:00",
+    "tags": [
+      "cà phê trên giường",
+      "trải nghiệm độc đáo",
+      "nghỉ trưa tiết kiệm",
+      "tối giản",
+      "ấm cúng"
+    ],
+    "duration_suggested_min": 120,
+    "ward": "An Hải"
+  },
+  {
+    "name": "Phin Cũ Cafe",
+    "type": "quán cà phê",
+    "description": "Không gian hoài cổ với nội thất gỗ, đồ vật vintage; sân vườn nhỏ và tầng trên yên tĩnh, nhiều cây xanh; phục vụ cà phê phin truyền thống, cà phê muối, trà, nước ép; thường có đêm nhạc acoustic và workshop nhỏ.",
+    "district": "Sơn Trà",
+    "open_time": "07:00",
+    "close_time": "22:00",
+    "tags": [
+      "vintage",
+      "vườn",
+      "acoustic",
+      "workshop",
+      "cà phê phin"
+    ],
+    "duration_suggested_min": 90,
+    "ward": "An Hải"
+  },
+  {
+    "name": "Myan Coffee 2",
+    "type": "quán cà phê",
+    "description": "Ẩn mình trong hẻm, không gian hoài cổ pha hiện đại với bàn ghế gỗ, kệ sách, cây xanh; có sân hiên, yên tĩnh – phù hợp đọc sách và làm việc.",
+    "district": "Sơn Trà",
+    "open_time": "07:30",
+    "close_time": "22:30",
+    "tags": [
+      "vintage",
+      "vườn",
+      "yên tĩnh",
+      "góc học tập"
+    ],
+    "duration_suggested_min": 90,
+    "ward": "An Hải"
+  }
+]

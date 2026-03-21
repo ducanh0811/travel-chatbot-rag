@@ -1,0 +1,63 @@
+services:
+  # ─── Redis ───────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: travel_chatbot_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ─── Load data (chạy 1 lần để build ChromaDB) ────────────────────────────────
+  load_data:
+    build: .
+    container_name: travel_chatbot_loader
+    env_file: .env
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - chromadb_data:/app/chromadb
+      - ./data:/app/data:ro
+    entrypoint: ["python", "load_data.py"]
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: "no"       # Chỉ chạy 1 lần, không restart
+
+  # ─── API Server ───────────────────────────────────────────────────────────────
+  api:
+    build: .
+    container_name: travel_chatbot_api
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    ports:
+      - "8000:8000"
+    volumes:
+      - chromadb_data:/app/chromadb
+      - ./data:/app/data:ro
+    depends_on:
+      redis:
+        condition: service_healthy
+      load_data:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      start_period: 20s
+      retries: 3
+
+volumes:
+  redis_data:
+    driver: local
+  chromadb_data:
+    driver: local

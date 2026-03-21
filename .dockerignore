@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Environment files (secret!)
+.env
+*.env
+
+# ChromaDB (sẽ được mount qua volume)
+chromadb/
+chromadb_backup_*/
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+tests/__pycache__/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Docker
+docker-compose.override.yml
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
